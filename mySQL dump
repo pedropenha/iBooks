@@ -1,0 +1,426 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema ibooks
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema ibooks
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `ibooks` DEFAULT CHARACTER SET utf8 ;
+-- -----------------------------------------------------
+-- Schema ibooks
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema ibooks
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `ibooks` DEFAULT CHARACTER SET utf8mb3 ;
+USE `ibooks` ;
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`PessoaFisica`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`PessoaFisica` (
+  `idPessoaFisica` INT NOT NULL,
+  `nome` VARCHAR(80) NOT NULL,
+  `cpf` VARCHAR(11) NOT NULL,
+  `dtNasc` VARCHAR(10) NULL,
+  `senha` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idPessoaFisica`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`administrador`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`administrador` (
+  `idadministrador` INT NOT NULL,
+  `PessoaFisica_idPessoaFisica` INT NOT NULL,
+  PRIMARY KEY (`idadministrador`),
+  INDEX `fk_administrador_PessoaFisica_idx` (`PessoaFisica_idPessoaFisica` ASC) VISIBLE,
+  CONSTRAINT `fk_administrador_PessoaFisica`
+    FOREIGN KEY (`PessoaFisica_idPessoaFisica`)
+    REFERENCES `ibooks`.`PessoaFisica` (`idPessoaFisica`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`colaborador`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`colaborador` (
+  `idcolaborador` INT NOT NULL,
+  `PessoaFisica_idPessoaFisica` INT NOT NULL,
+  PRIMARY KEY (`idcolaborador`),
+  INDEX `fk_colaborador_PessoaFisica1_idx` (`PessoaFisica_idPessoaFisica` ASC) VISIBLE,
+  CONSTRAINT `fk_colaborador_PessoaFisica1`
+    FOREIGN KEY (`PessoaFisica_idPessoaFisica`)
+    REFERENCES `ibooks`.`PessoaFisica` (`idPessoaFisica`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`convenios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`convenios` (
+  `idconvenios` INT NOT NULL,
+  `nome_convenio` VARCHAR(45) NULL,
+  PRIMARY KEY (`idconvenios`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`cliente` (
+  `idcliente` INT NOT NULL,
+  `PessoaFisica_idPessoaFisica` INT NOT NULL,
+  `convenios_idconvenios` INT NOT NULL,
+  PRIMARY KEY (`idcliente`),
+  INDEX `fk_cliente_PessoaFisica1_idx` (`PessoaFisica_idPessoaFisica` ASC) VISIBLE,
+  INDEX `fk_cliente_convenios1_idx` (`convenios_idconvenios` ASC) VISIBLE,
+  CONSTRAINT `fk_cliente_PessoaFisica1`
+    FOREIGN KEY (`PessoaFisica_idPessoaFisica`)
+    REFERENCES `ibooks`.`PessoaFisica` (`idPessoaFisica`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cliente_convenios1`
+    FOREIGN KEY (`convenios_idconvenios`)
+    REFERENCES `ibooks`.`convenios` (`idconvenios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`configuracoes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`configuracoes` (
+  `idconfiguracoes` INT NOT NULL,
+  `dias_emprestimo` INT NULL,
+  `total_livros` INT NULL,
+  `administrador_idadministrador` INT NOT NULL,
+  PRIMARY KEY (`idconfiguracoes`),
+  INDEX `fk_configuracoes_administrador1_idx` (`administrador_idadministrador` ASC) VISIBLE,
+  CONSTRAINT `fk_configuracoes_administrador1`
+    FOREIGN KEY (`administrador_idadministrador`)
+    REFERENCES `ibooks`.`administrador` (`idadministrador`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`patrimonio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`patrimonio` (
+  `idpatrimonio` INT NOT NULL,
+  `numero_serie` INT NOT NULL,
+  `tipo` INT NULL,
+  `colaborador_idcolaborador` INT NOT NULL,
+  `valor_compra` DECIMAL(10,2) NULL,
+  `quantidade_patrimonio` INT NULL,
+  PRIMARY KEY (`idpatrimonio`),
+  INDEX `fk_patrimonio_colaborador1_idx` (`colaborador_idcolaborador` ASC) VISIBLE,
+  CONSTRAINT `fk_patrimonio_colaborador1`
+    FOREIGN KEY (`colaborador_idcolaborador`)
+    REFERENCES `ibooks`.`colaborador` (`idcolaborador`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`idiomas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`idiomas` (
+  `ididiomas` INT NOT NULL,
+  `idioma_nome` VARCHAR(45) NULL,
+  PRIMARY KEY (`ididiomas`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`titulo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`titulo` (
+  `idtitulo` INT NOT NULL,
+  `nome_titulo` VARCHAR(45) NULL,
+  `qtde_paginas_titulo` INT NULL,
+  `idiomas_ididiomas` INT NOT NULL,
+  PRIMARY KEY (`idtitulo`),
+  INDEX `fk_titulo_idiomas1_idx` (`idiomas_ididiomas` ASC) VISIBLE,
+  CONSTRAINT `fk_titulo_idiomas1`
+    FOREIGN KEY (`idiomas_ididiomas`)
+    REFERENCES `ibooks`.`idiomas` (`ididiomas`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`lista_de_espera`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`lista_de_espera` (
+  `idlista_de_espera` INT NOT NULL,
+  `cliente_idcliente` INT NOT NULL,
+  `titulo_idtitulo` INT NOT NULL,
+  PRIMARY KEY (`idlista_de_espera`),
+  INDEX `fk_lista_de_espera_cliente1_idx` (`cliente_idcliente` ASC) VISIBLE,
+  INDEX `fk_lista_de_espera_titulo1_idx` (`titulo_idtitulo` ASC) VISIBLE,
+  CONSTRAINT `fk_lista_de_espera_cliente1`
+    FOREIGN KEY (`cliente_idcliente`)
+    REFERENCES `ibooks`.`cliente` (`idcliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lista_de_espera_titulo1`
+    FOREIGN KEY (`titulo_idtitulo`)
+    REFERENCES `ibooks`.`titulo` (`idtitulo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`creditos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`creditos` (
+  `idcreditos` INT NOT NULL,
+  `total_creditos` DECIMAL(10,2) NULL,
+  `cliente_idcliente` INT NOT NULL,
+  `colaborador_idcolaborador` INT NOT NULL,
+  PRIMARY KEY (`idcreditos`),
+  INDEX `fk_creditos_cliente1_idx` (`cliente_idcliente` ASC) VISIBLE,
+  INDEX `fk_creditos_colaborador1_idx` (`colaborador_idcolaborador` ASC) VISIBLE,
+  CONSTRAINT `fk_creditos_cliente1`
+    FOREIGN KEY (`cliente_idcliente`)
+    REFERENCES `ibooks`.`cliente` (`idcliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_creditos_colaborador1`
+    FOREIGN KEY (`colaborador_idcolaborador`)
+    REFERENCES `ibooks`.`colaborador` (`idcolaborador`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`editoras`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`editoras` (
+  `ideditoras` INT NOT NULL,
+  `nome_editora` VARCHAR(45) NULL,
+  PRIMARY KEY (`ideditoras`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`exemplar`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`exemplar` (
+  `idexemplar` INT NOT NULL,
+  `numero_de_serie` INT NOT NULL,
+  `ISBN-10` VARCHAR(45) NULL,
+  `ISBN-13` VARCHAR(45) NULL,
+  `editoras_ideditoras` INT NOT NULL,
+  `titulo_idtitulo` INT NOT NULL,
+  `status` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`idexemplar`),
+  INDEX `fk_exemplar_editoras1_idx` (`editoras_ideditoras` ASC) VISIBLE,
+  INDEX `fk_exemplar_titulo1_idx` (`titulo_idtitulo` ASC) VISIBLE,
+  CONSTRAINT `fk_exemplar_editoras1`
+    FOREIGN KEY (`editoras_ideditoras`)
+    REFERENCES `ibooks`.`editoras` (`ideditoras`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_exemplar_titulo1`
+    FOREIGN KEY (`titulo_idtitulo`)
+    REFERENCES `ibooks`.`titulo` (`idtitulo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`entrada_saida_livros`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`entrada_saida_livros` (
+  `identrada_saida_livros` INT NOT NULL,
+  `patrimonio_idpatrimonio` INT NOT NULL,
+  `cliente_idcliente` INT NOT NULL,
+  `exemplar_idexemplar` INT NOT NULL,
+  `creditos_idcreditos` INT NOT NULL,
+  `colaborador_idcolaborador` INT NOT NULL,
+  PRIMARY KEY (`identrada_saida_livros`),
+  INDEX `fk_entrada_saida_livros_patrimonio1_idx` (`patrimonio_idpatrimonio` ASC) VISIBLE,
+  INDEX `fk_entrada_saida_livros_cliente1_idx` (`cliente_idcliente` ASC) VISIBLE,
+  INDEX `fk_entrada_saida_livros_exemplar1_idx` (`exemplar_idexemplar` ASC) VISIBLE,
+  INDEX `fk_entrada_saida_livros_creditos1_idx` (`creditos_idcreditos` ASC) VISIBLE,
+  INDEX `fk_entrada_saida_livros_colaborador1_idx` (`colaborador_idcolaborador` ASC) VISIBLE,
+  CONSTRAINT `fk_entrada_saida_livros_patrimonio1`
+    FOREIGN KEY (`patrimonio_idpatrimonio`)
+    REFERENCES `ibooks`.`patrimonio` (`idpatrimonio`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_entrada_saida_livros_cliente1`
+    FOREIGN KEY (`cliente_idcliente`)
+    REFERENCES `ibooks`.`cliente` (`idcliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_entrada_saida_livros_exemplar1`
+    FOREIGN KEY (`exemplar_idexemplar`)
+    REFERENCES `ibooks`.`exemplar` (`idexemplar`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_entrada_saida_livros_creditos1`
+    FOREIGN KEY (`creditos_idcreditos`)
+    REFERENCES `ibooks`.`creditos` (`idcreditos`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_entrada_saida_livros_colaborador1`
+    FOREIGN KEY (`colaborador_idcolaborador`)
+    REFERENCES `ibooks`.`colaborador` (`idcolaborador`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`emprestar_livro`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`emprestar_livro` (
+  `idemprestar_livro` INT NOT NULL,
+  `cliente_idcliente` INT NOT NULL,
+  `data_emprestimo` DATETIME NOT NULL,
+  `prev_devolucao` DATE NOT NULL,
+  `dt_envio_email` DATE NULL,
+  PRIMARY KEY (`idemprestar_livro`),
+  INDEX `fk_emprestar_livro_cliente1_idx` (`cliente_idcliente` ASC) VISIBLE,
+  CONSTRAINT `fk_emprestar_livro_cliente1`
+    FOREIGN KEY (`cliente_idcliente`)
+    REFERENCES `ibooks`.`cliente` (`idcliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`autores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`autores` (
+  `idautores` INT NOT NULL,
+  `nome_autor` VARCHAR(45) NULL,
+  PRIMARY KEY (`idautores`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`autores_titulos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`autores_titulos` (
+  `autores_idautores` INT NOT NULL,
+  `titulo_idtitulo` INT NOT NULL,
+  PRIMARY KEY (`autores_idautores`, `titulo_idtitulo`),
+  INDEX `fk_autores_titulos_titulo1_idx` (`titulo_idtitulo` ASC) VISIBLE,
+  CONSTRAINT `fk_autores_titulos_autores1`
+    FOREIGN KEY (`autores_idautores`)
+    REFERENCES `ibooks`.`autores` (`idautores`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_autores_titulos_titulo1`
+    FOREIGN KEY (`titulo_idtitulo`)
+    REFERENCES `ibooks`.`titulo` (`idtitulo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`convenios_exemplar`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`convenios_exemplar` (
+  `convenios_idconvenios` INT NOT NULL,
+  `exemplar_idexemplar` INT NOT NULL,
+  PRIMARY KEY (`convenios_idconvenios`, `exemplar_idexemplar`),
+  INDEX `fk_convenios_exemplar_exemplar1_idx` (`exemplar_idexemplar` ASC) VISIBLE,
+  CONSTRAINT `fk_convenios_exemplar_convenios1`
+    FOREIGN KEY (`convenios_idconvenios`)
+    REFERENCES `ibooks`.`convenios` (`idconvenios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_convenios_exemplar_exemplar1`
+    FOREIGN KEY (`exemplar_idexemplar`)
+    REFERENCES `ibooks`.`exemplar` (`idexemplar`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`emprestimo_livro`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`emprestimo_livro` (
+  `idemprestimo_livro` INT NOT NULL,
+  `dt_devolucao` DATETIME NULL,
+  `emprestar_livro_idemprestar_livro` INT NOT NULL,
+  `exemplar_idexemplar` INT NOT NULL,
+  PRIMARY KEY (`idemprestimo_livro`, `emprestar_livro_idemprestar_livro`, `exemplar_idexemplar`),
+  INDEX `fk_emprestimo_livro_emprestar_livro1_idx` (`emprestar_livro_idemprestar_livro` ASC) VISIBLE,
+  INDEX `fk_emprestimo_livro_exemplar1_idx` (`exemplar_idexemplar` ASC) VISIBLE,
+  CONSTRAINT `fk_emprestimo_livro_emprestar_livro1`
+    FOREIGN KEY (`emprestar_livro_idemprestar_livro`)
+    REFERENCES `ibooks`.`emprestar_livro` (`idemprestar_livro`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_emprestimo_livro_exemplar1`
+    FOREIGN KEY (`exemplar_idexemplar`)
+    REFERENCES `ibooks`.`exemplar` (`idexemplar`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ibooks`.`restituicao_de_patrimonio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ibooks`.`restituicao_de_patrimonio` (
+  `idrestituicao_de_patrimonio` INT NOT NULL,
+  `valor_restituicao` DECIMAL(10,2) NULL,
+  `cliente_idcliente` INT NOT NULL,
+  `patrimonio_idpatrimonio` INT NOT NULL,
+  `colaborador_idcolaborador` INT NOT NULL,
+  PRIMARY KEY (`idrestituicao_de_patrimonio`),
+  INDEX `fk_restituicao_de_patrimonio_cliente1_idx` (`cliente_idcliente` ASC) VISIBLE,
+  INDEX `fk_restituicao_de_patrimonio_patrimonio1_idx` (`patrimonio_idpatrimonio` ASC) VISIBLE,
+  INDEX `fk_restituicao_de_patrimonio_colaborador1_idx` (`colaborador_idcolaborador` ASC) VISIBLE,
+  CONSTRAINT `fk_restituicao_de_patrimonio_cliente1`
+    FOREIGN KEY (`cliente_idcliente`)
+    REFERENCES `ibooks`.`cliente` (`idcliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_restituicao_de_patrimonio_patrimonio1`
+    FOREIGN KEY (`patrimonio_idpatrimonio`)
+    REFERENCES `ibooks`.`patrimonio` (`idpatrimonio`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_restituicao_de_patrimonio_colaborador1`
+    FOREIGN KEY (`colaborador_idcolaborador`)
+    REFERENCES `ibooks`.`colaborador` (`idcolaborador`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+USE `ibooks` ;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
