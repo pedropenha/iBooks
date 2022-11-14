@@ -1,0 +1,7 @@
+.btnhover:hover {
+    transform: scale(1.2);
+}
+
+.btnhover {
+    transition: all .8s ease;
+}

@@ -1,8 +1,13 @@
 import React from "react"
+import "../assets/css/style.css"
 
 export default props =>
-    <button className="bg-[#58E3C2] text-white drop-shadow-lg rounded-md p-3 justify-items-center" >
-        <span className="flex">
-            {props.children}
+    <button className={`text-white drop-shadow-lg rounded-md p-3 justify-items-center btnhover`}
+            style ={{backgroundColor: `${props.bgColor}`, color:`${props.tColor}`}} >
+        <span className="flex items-center">
+            {props.icone}
+            <span className='pl-1'>
+                {props.texto}
+            </span>
         </span>
     </button>

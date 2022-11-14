@@ -13,12 +13,7 @@ function Livro() {
     </header>
     <main>
       <div>
-        <Button>
-            <span className="flex space-x-20">
-              <FaPlus/>
-              teste de gay
-              </span>
-        </Button>
+        <Button icone={<FaPlus/>} texto ="sei la" bgColor="red" tColor="#000"/>
       </div>
     </main>
     
