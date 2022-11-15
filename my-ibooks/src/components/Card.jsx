@@ -1,10 +1,16 @@
-import React from "react"
+import React, {useState} from "react"
 import "../assets/css/style.css"
 import { FaBook, FaBuilding, FaGlobe, FaPen, FaPlus, FaQrcode, FaTrash } from 'react-icons/fa';
 import Button from './Button';
+import ExcModal from "./ExcModal";
 
-export default props =>
-    <div className="min-w-[85%] max-h-300px items-center content-center justify-center mb-2">
+// 
+
+// export default props =>
+export default function Card (props) {
+    const [visible,setVisible]=useState(false)
+    return (
+    <div className="min-w-[85%] items-center content-center justify-center mb-2">
         <div href="#" class="flex-col flex w-full content-center bg-white rounded-lg border shadow-md sm:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
             
             {/* imagem */}
@@ -98,13 +104,17 @@ export default props =>
             </div>
 
             {/* botoes de alterar */}
-            <div className = "flex w-12 h-12 mt-5 mr-3">
+            <div className = "flex w-12 h-10 mt-5 mr-3">
                 <Button icone={<FaPen/>} texto ="" bgColor="#3F00A6" tColor="#fff"/>
             </div>
 
             {/* botao de excluir */}
-            <div className = "flex w-12 h-12 mt-5 mr-5">
-                <Button icone={<FaTrash/>} texto ="" bgColor="#CE0000" tColor="#fff"/>
+            <div className = "flex w-12 h-10 mt-5 mr-5">
+                <Button icone={<FaTrash/>} texto ="" bgColor="#CE0000" tColor="#fff" onClick={()=>setVisible(true)}/>
             </div>
         </div>
+        <ExcModal visible={visible} funcao={()=>setVisible(false)}/>
+        
     </div>
+    )
+}
