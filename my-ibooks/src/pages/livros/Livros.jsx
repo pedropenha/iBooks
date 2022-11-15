@@ -3,20 +3,23 @@ import { FaBook, FaBuilding, FaGlobe, FaPen, FaPlus, FaQrcode, FaTrash } from 'r
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Nav from '../../components/Nav';
+import Modal from '../../components/Modal';
 
 
 function Livro() {
-  const [count, setCount] = useState(0)
+  const [visible,setVisible]=useState(false)
+  // const [count, setCount] = useState(0)
 
   return (
     <>
-      {/* <div className='mb-5'>
+      <div className='flex mb-5'>
         <Nav/>
-      </div> */}
-      <div>
-        <Button icone={<FaTrash/>} texto ="" bgColor="#CE0000" tColor="#fff"/>
-      </div> 
-      {/* <div className='justify-center flex mt-10'>
+      </div>
+      <div className='px-20'>
+        <div className='flex mb-5 justify-end w-full mr-4'>
+        <Button icone={<FaPlus/>} texto ="Cadastrar Livros" bgColor="#58E3C2" tColor="#fff" onClick={()=>setVisible(true)}/>
+        </div> 
+        <div className='flex justify-center flex mt-10'>
         <ul>
           <li>
             <Card titulo="Hunter x Hunter - 11"
@@ -32,7 +35,7 @@ function Livro() {
             </Card>
           </li>
           <li>
-            <Card titulo="Berserk - 27"
+            <Card titulo="Berserk - 39"
               exemplares="20"
               emprestados="5"
               disponiveis="15"
@@ -41,14 +44,30 @@ function Livro() {
               editora="Panini"
               isbn10="8542612272"
               isbn13="978-8542612271"
-              img="./src/assets/images/capaBerserk.jpg">
+              img="./src/assets/images/berserk39.jpg">
+            </Card>
+          </li>
+          <li>
+            <Card titulo="Vagabond - 34"
+              exemplares="20"
+              emprestados="5"
+              disponiveis="15"
+              tPaginas="216"
+              idioma="Portugues"
+              editora="Panini"
+              isbn10="8542612272"
+              isbn13="978-8542612271"
+              img="./src/assets/images/vagabond34.jpg">
             </Card>
           </li>
         </ul>
-      </div> */}
-
+        </div>
+      </div>
+      
+      
+    {/* <button onClick={()=>setVisible(true)}>Open Modal</button> */}
+    <Modal visible={visible} />
     </>
-  )
-}
-
+  )}
+  
 export default Livro;

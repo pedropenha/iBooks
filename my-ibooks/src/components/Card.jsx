@@ -1,6 +1,6 @@
 import React from "react"
 import "../assets/css/style.css"
-
+import { FaBook, FaBuilding, FaGlobe, FaPen, FaPlus, FaQrcode, FaTrash } from 'react-icons/fa';
 import Button from './Button';
 
 export default props =>
