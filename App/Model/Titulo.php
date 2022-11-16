@@ -84,12 +84,30 @@ final class Titulo
         $this->idiomas_ididiomas = $idiomas_ididiomas;
     }
 
-    /**
-     * @param $idtitulo
-     * @param $nome_titulo
-     * @param $qtde_paginas_titulo
-     * @param $idiomas_ididiomas
-     */
+    public static function getAll()
+    {
+        return TituloDAO::getAll();
+    }
+
+    public static function getById($id)
+    {
+        return TituloDAO::getOne($id);
+    }
+
+    public static function save(Titulo $titulo)
+    {
+        return TituloDAO::save($titulo);
+    }
+
+    public static function update(Titulo $titulo)
+    {
+        return TituloDAO::update($titulo);
+    }
+
+    public static function delete($id)
+    {
+        return TituloDAO::delete($id);
+    }
 
 
 }

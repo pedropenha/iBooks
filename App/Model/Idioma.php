@@ -51,6 +51,28 @@ final class Idioma
         $this->idioma_nome = $idioma_nome;
     }
 
+    public static function getAll()
+    {
+        return IdiomaDAO::getAll();
+    }
 
+    public static function getById($id)
+    {
+        return IdiomaDAO::getOne($id);
+    }
 
+    public static function save(Idioma $idioma)
+    {
+        return Idioma::save($idioma);
+    }
+
+    public static function update(Idioma $idioma)
+    {
+        return IdiomaDAO::update($idioma);
+    }
+
+    public static function delete($id)
+    {
+        return IdiomaDAO::delete($id);
+    }
 }

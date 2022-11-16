@@ -51,5 +51,30 @@ final class Editora
         $this->nome_editora = $nome_editora;
     }
 
+    public static function getAll()
+    {
+        return EditoraDAO::getAll();
+    }
+
+    public static function getById($id)
+    {
+        return EditoraDAO::getOne($id);
+    }
+
+    public static function save(Editora $editora)
+    {
+        return EditoraDAO::save($editora);
+    }
+
+    public static function update(Editora $editora)
+    {
+        return EditoraDAO::update($editora);
+    }
+
+    public static function delete($id)
+    {
+        return EditoraDAO::delete($id);
+    }
+
 
 }

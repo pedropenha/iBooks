@@ -146,5 +146,30 @@ final class Exemplar
         $this->status = $status;
     }
 
+    public static function getAll()
+    {
+        return ExemplarDAO::getAll();
+    }
+
+    public static function getById($id)
+    {
+        return ExemplarDAO::getOne($id);
+    }
+
+    public static function save(Exemplar $exemplar)
+    {
+        return ExemplarDAO::save($exemplar);
+    }
+
+    public static function update(Exemplar $exemplar)
+    {
+        return ExemplarDAO::update($exemplar);
+    }
+
+    public static function delete($id)
+    {
+        return ExemplarDAO::delete($id);
+    }
+
 
 }

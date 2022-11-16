@@ -2,10 +2,7 @@
 
 namespace App\Control;
 
-use App\Model\Editora;
 use App\Model\Exemplar;
-use App\Model\Idioma;
-use App\Model\Titulo;
 use App\Services\HttpResponse;
 use App\Services\UtilValidator;
 use Psr\Http\Message\ResponseInterface as Response;
