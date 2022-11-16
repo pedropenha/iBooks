@@ -10,7 +10,7 @@ function Login() {
           <span className='grid'>  
             <img src='../public/Logo.svg' className='w-44 justify-self-center -my-4'></img>
             <form className="justify-self-center">
-              <input type="email" placeholder="E-mail" className="h-10 px-2 w-80 border-2 border-gray-300 rounded my-2 "></input>
+              <input type="email" placeholder="CPF" className="h-10 px-2 w-80 border-2 border-gray-300 rounded my-2 "></input>
               <br></br>
               <input type="password" placeholder="Senha"  className="h-10 w-80 border-2 px-2 border-gray-300 rounded mb-2"></input>
             </form>
