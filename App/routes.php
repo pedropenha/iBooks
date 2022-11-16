@@ -21,6 +21,10 @@ $app->group('/iBooks/patrimonio', function (\Slim\Routing\RouteCollectorProxy $g
 
 });
 
+$app->group('/iBooks/login', function (\Slim\Routing\RouteCollectorProxy $group) {
+    $group->post('/', \App\Control\Login::class.':login');
+});
+
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
     throw new HttpNotFoundException($request);
 });
