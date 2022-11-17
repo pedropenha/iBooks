@@ -67,7 +67,7 @@ class IdiomaDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "DELETE IDIOMA WHERE id_idioma = ?";
+        $sql = "DELETE FROM IDIOMA WHERE id_idioma = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
 

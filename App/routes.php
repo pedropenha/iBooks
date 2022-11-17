@@ -30,6 +30,10 @@ $app->group('/iBooks/livro', function (\Slim\Routing\RouteCollectorProxy $group)
     $group->get('/{id}', \App\Control\LivroControl::class.':buscar_livro');
 
     $group->post('/', \App\Control\LivroControl::class.':inserir_livro');
+
+    $group->post('/editar', \App\Control\LivroControl::class.':editar_livro');
+
+    $group->post('/deletar', \App\Control\LivroControl::class.':deletar_livro');
 });
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {

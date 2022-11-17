@@ -53,6 +53,7 @@ class EditoraDAO
         $sql = "UPDATE EDITORA SET nome_editora = ? WHERE id_editora = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $editora->getNomeEditora());
+        $conn->bindValue(1, $editora->getId());
 
         if($conn->execute()){
             return self::getOne($editora->getId());
@@ -65,7 +66,7 @@ class EditoraDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "DELETE EDITORA WHERE id_editora = ?";
+        $sql = "DELETE FROM EDITORA WHERE id_editora = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
 

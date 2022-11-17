@@ -60,6 +60,7 @@ class TituloDAO
         $conn->bindValue(1, $titulo->getNomeTitulo());
         $conn->bindValue(2, $titulo->getPaginasTitulo());
         $conn->bindValue(3, $titulo->getIdIdiomas());
+        $conn->bindValue(4, $titulo->getId());
 
 
         if($conn->execute()){
@@ -73,7 +74,7 @@ class TituloDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "DELETE TITULO WHERE id_titulo = ?";
+        $sql = "DELETE FROM TITULO WHERE id_titulo = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
 

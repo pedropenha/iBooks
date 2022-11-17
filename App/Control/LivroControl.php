@@ -50,7 +50,7 @@ final class LivroControl extends Control
     public function inserir_livro(Request $request, Response $response, array $args)
     {
         return $this->encapsular_response(function ($request, $response, $args) {
-            $campos_obrigatorios = ['id_idioma', 'id_editora', 'nome_titulo', 'paginas_titulo', 'num_serie', 'isbn_10', 'isbn_13'];
+            $campos_obrigatorios = ['id_idioma','num_serie', 'id_editora', 'nome_titulo', 'paginas_titulo', 'isbn_10', 'isbn_13'];
 
             $data = $request->getParsedBody();
 
@@ -64,14 +64,61 @@ final class LivroControl extends Control
             if (!$titulo)
                 return HttpResponse::status500();
 
-            $exemplar = new Exemplar('', $data['num_serie'], $data['isbn_10'], $data['isbn_13'], 0, $data['id_editora'], $titulo);
+            $exemplar = new Exemplar('',$data['num_serie'], $data['isbn_10'], $data['isbn_13'], 0, $data['id_editora'], $titulo);
 
             $exemplar = $exemplar::save($exemplar);
 
             if (!$exemplar)
                 return HttpResponse::status500();
 
-            return HttpResponse::status200('deu certo essa porra');
+            return HttpResponse::status200();
+        }, $request, $response, $args);
+    }
+
+    public function editar_livro(Request $request, Response $response, array $args) {
+        return $this->encapsular_response(function ($request, $response, $args){
+            $campos_obrigatorios = ['id_exemplar','id_idioma', 'id_editora', 'id_titulo', 'nome_titulo', 'paginas_titulo', 'isbn_10', 'isbn_13', 'status'];
+
+            $data = $request->getParsedBody();
+
+            if(!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
+                return HttpResponse::status401();
+
+            $titulo = new Titulo($data['id_titulo'], $data['nome_titulo'], $data['paginas_titulo'], $data['id_idioma']);
+
+            $titulo = $titulo::update($titulo);
+
+            if (!$titulo)
+                return HttpResponse::status500();
+
+            $exemplar = new Exemplar($data['id_exemplar'], '', $data['isbn_10'], $data['isbn_13'], $data['status'], $data['id_editora'], $data['id_titulo']);
+
+            $exemplar = $exemplar::update($exemplar);
+
+            if (!$exemplar)
+                return HttpResponse::status500();
+
+            return  HttpResponse::status200('deu certo essa porra');
+        }, $request, $response, $args);
+    }
+
+    public function deletar_livro(Request $request, Response $response, array $args) {
+        return $this->encapsular_response(function ($request, $response, $args){
+            $campos_obrigatorios = ['id_exemplar'];
+
+            $data = $request->getParsedBody();
+
+            if(!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
+                return HttpResponse::status401();
+
+            $exemplar = new Exemplar();
+
+            $exemplar = $exemplar::delete($data['id_exemplar']);
+
+            if (!$exemplar)
+                return HttpResponse::status500();
+
+            return  HttpResponse::status200('deu certo essa porra');
         }, $request, $response, $args);
     }
 

@@ -56,14 +56,14 @@ class ExemplarDAO
     public static function update(Exemplar $exemplar): mixed
     {
         $conn = Conexao::getInstance();
-        $sql = "UPDATE EXEMPLAR SET num_serie = ?, isbn_10 = ?, isbn_13 = ?, status = ?, id_editora = ?, id_titulo = ? WHERE id_exemplar = ?";
+        $sql = "UPDATE EXEMPLAR SET isbn_10 = ?, isbn_13 = ?, status = ?, id_editora = ?, id_titulo = ? WHERE id_exemplar = ?";
         $conn = $conn->prepare($sql);
-        $conn->bindValue(1, $exemplar->getNumSerie());
         $conn->bindValue(1, $exemplar->getISBN10());
-        $conn->bindValue(1, $exemplar->getISBN13());
-        $conn->bindValue(1, $exemplar->getStatus());
-        $conn->bindValue(1, $exemplar->getIdEditora());
-        $conn->bindValue(1, $exemplar->getIdTitulo());
+        $conn->bindValue(2, $exemplar->getISBN13());
+        $conn->bindValue(3, $exemplar->getStatus());
+        $conn->bindValue(4, $exemplar->getIdEditora());
+        $conn->bindValue(5, $exemplar->getIdTitulo());
+        $conn->bindValue(6, $exemplar->getId());
 
 
 
@@ -78,7 +78,7 @@ class ExemplarDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "DELETE EXEMPLAR WHERE id_exemplar = ?";
+        $sql = "DELETE FROM EXEMPLAR WHERE id_exemplar = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
 
