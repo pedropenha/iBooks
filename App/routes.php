@@ -20,6 +20,13 @@ $app->group('/iBooks/patrimonio', function (\Slim\Routing\RouteCollectorProxy $g
 
 });
 
+$app->group('/iBooks/categoria', function (\Slim\Routing\RouteCollectorProxy $group) {
+
+    $group->get('/', \App\Control\CategoriaControl::class.':buscar_categorias');
+
+
+});
+
 $app->group('/iBooks/login', function (\Slim\Routing\RouteCollectorProxy $group) {
     $group->post('/', \App\Control\Login::class.':login');
 });

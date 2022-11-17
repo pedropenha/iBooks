@@ -46,8 +46,8 @@ final class PatrimonioControl extends Control
 
             $data = $request->getParsedBody();
 
-            if(!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
-                return HttpResponse::status401();
+//            if(!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
+//                return HttpResponse::status401();
 
             $patrimonio = new Patrimonio($data['nome'], $data['valor'], $data['data_compra'], $data['categoria'], $data['numero_patrimonio']);
             if($patrimonio->save($patrimonio))
