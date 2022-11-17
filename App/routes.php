@@ -34,6 +34,10 @@ $app->group('/iBooks/login', function (\Slim\Routing\RouteCollectorProxy $group)
 $app->group('/iBooks/livro', function (\Slim\Routing\RouteCollectorProxy $group) {
     $group->get('/', \App\Control\LivroControl::class.':buscar_livros');
 
+    $group->get('/idiomas', \App\Control\LivroControl::class.':buscar_idiomas');
+
+    $group->get('/editoras', \App\Control\LivroControl::class.':buscar_editoras');
+
     $group->get('/{id}', \App\Control\LivroControl::class.':buscar_livro');
 
     $group->post('/', \App\Control\LivroControl::class.':inserir_livro');

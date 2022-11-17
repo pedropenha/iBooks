@@ -16,7 +16,7 @@ class EditoraDAO
         $conn = $conn->prepare($sql);
 
         if($conn->execute()){
-            return $conn->fetchAll();
+            return $conn->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         return false;
