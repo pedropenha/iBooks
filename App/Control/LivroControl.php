@@ -2,6 +2,7 @@
 
 namespace App\Control;
 
+use App\Model\Editora;
 use App\Model\Exemplar;
 use App\Model\Idioma;
 use App\Model\Livro;
@@ -54,8 +55,8 @@ final class LivroControl extends Control
 
             $data = $request->getParsedBody();
 
-            if (!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
-                return HttpResponse::status401();
+//            if (!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
+//                return HttpResponse::status401();
 
             $titulo = new Titulo('', $data['nome_titulo'], $data['paginas_titulo'], $data['id_idioma']);
 
@@ -119,6 +120,32 @@ final class LivroControl extends Control
                 return HttpResponse::status500();
 
             return  HttpResponse::status200('deu certo essa porra');
+        }, $request, $response, $args);
+    }
+
+    public function buscar_editoras(Request $request, Response $response, array $args)
+    {
+        return $this->encapsular_response(function ($request, $response, $args) {
+            $editora = new Editora();
+            $dados = $editora->getAll();
+            if ($dados)
+                return HttpResponse::status200($dados);
+
+            return HttpResponse::status404();
+
+        }, $request, $response, $args);
+    }
+
+    public function buscar_idiomas(Request $request, Response $response, array $args)
+    {
+        return $this->encapsular_response(function ($request, $response, $args) {
+            $idioma = new Idioma();
+            $dados = $idioma->getAll();
+            if ($dados)
+                return HttpResponse::status200($dados);
+
+            return HttpResponse::status404();
+
         }, $request, $response, $args);
     }
 
