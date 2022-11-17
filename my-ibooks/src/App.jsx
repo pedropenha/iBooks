@@ -7,6 +7,7 @@ import Livro from './pages/livros/livros'
 import Sobre from './pages/sobre/Sobre'
 import Patrimonio from './pages/patrimonio/Patrimonio'
 import Login from './pages/login/Login'
+import Paramet from './pages/parametro/Paramet'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,6 +19,7 @@ function App() {
         <Route path='/sobre' element={ <Sobre/> }/>
         <Route path='/patrimonio' element={ <Patrimonio/>}/>
         <Route path='/login' element={ <Login/> } />
+        <Route path="/parametriza" element={ <Paramet/>}/>
       </Routes>
     </>
   )
