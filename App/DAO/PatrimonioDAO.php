@@ -13,11 +13,11 @@ class PatrimonioDAO
     public static function getAll(): bool | array
     {
         $conn = Conexao::getInstance();
-        $sql = "SELECT * FROM PATRIMONIO";
+        $sql = "SELECT * FROM PATRIMONIO as P INNER JOIN CATEGORIA as C ON C.idCategoria = P.idCategoria";
         $conn = $conn->prepare($sql);
 
         if($conn->execute()){
-            return $conn->fetchAll();
+            return $conn->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         return false;
@@ -26,7 +26,7 @@ class PatrimonioDAO
     public static function getOne($id): bool | array
     {
         $conn = Conexao::getInstance();
-        $sql = "SELECT * FROM PATRIMONIO WHERE idPatrimonio = ?";
+        $sql = "SELECT * FROM PATRIMONIO as P INNER JOIN CATEGORIA as C ON C.idCategoria = P.idCategoria WHERE idPatrimonio = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
         $conn->execute();
@@ -41,13 +41,13 @@ class PatrimonioDAO
     public static function save(Patrimonio $patrimonio): bool
     {
         $conn = Conexao::getInstance();
-        $sql = "INSERT INTO PATRIMONIO(nome, valor, data_compra, categoria, numero_serie) VALUES (?,?,?,?,?)";
+        $sql = "INSERT INTO PATRIMONIO(nome_patrimonio, valor_patrimonio, data_aquisicao, numero_patrimonio, idCategoria) VALUES (?,?,?,?,?)";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $patrimonio->getNomePatrimonio());
         $conn->bindValue(2, $patrimonio->getValorPatrimonio());
         $conn->bindValue(3, $patrimonio->getDataAquisicao());
-        $conn->bindValue(4, $patrimonio->getCategoria());
-        $conn->bindValue(5, $patrimonio->getNumeroPatrimonio());
+        $conn->bindValue(4, $patrimonio->getNumeroPatrimonio());
+        $conn->bindValue(5, $patrimonio->getCategoria());
 
         return $conn->execute();
     }
@@ -55,13 +55,13 @@ class PatrimonioDAO
     public static function update(Patrimonio $patrimonio): mixed
     {
         $conn = Conexao::getInstance();
-        $sql = "UPDATE PATRIMONIO SET nome = ?, valor = ?, data_compra = ?, categoria = ?, numero_serie = ? WHERE idPatrimonio = ?";
+        $sql = "UPDATE PATRIMONIO SET nome_patrimonio = ?, valor_patrimonio = ?, data_aquisicao = ?, numero_patrimonio = ?, idCategoria = ? WHERE idPatrimonio = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $patrimonio->getNomePatrimonio());
         $conn->bindValue(2, $patrimonio->getValorPatrimonio());
         $conn->bindValue(3, $patrimonio->getDataAquisicao());
-        $conn->bindValue(4, $patrimonio->getCategoria());
-        $conn->bindValue(5, $patrimonio->getNumeroPatrimonio());
+        $conn->bindValue(4, $patrimonio->getNumeroPatrimonio());
+        $conn->bindValue(5, $patrimonio->getCategoria());
         $conn->bindValue(6, $patrimonio->getIdPatrimonio());
 
         if($conn->execute()){
@@ -75,7 +75,7 @@ class PatrimonioDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "DELETE PATRIMONIO WHERE idPatrimonio = ?";
+        $sql = "DELETE FROM PATRIMONIO WHERE idPatrimonio = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
 
