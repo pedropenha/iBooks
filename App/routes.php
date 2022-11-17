@@ -1,6 +1,5 @@
 <?php
 
-use Slim\Exception\HttpNotFoundException;
 
 use Slim\App;
 
@@ -25,6 +24,15 @@ $app->group('/iBooks/login', function (\Slim\Routing\RouteCollectorProxy $group)
     $group->post('/', \App\Control\Login::class.':login');
 });
 
-$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
-    throw new HttpNotFoundException($request);
+$app->group('/iBooks/livro', function (\Slim\Routing\RouteCollectorProxy $group) {
+    $group->get('/', \App\Control\LivroControl::class.':buscar_livros');
+
+    $group->get('/{id}', \App\Control\LivroControl::class.':buscar_livro');
+
+    $group->post('/', \App\Control\LivroControl::class.':inserir_livro');
 });
+
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+    throw new \Slim\Exception\HttpNotFoundException($request);
+});
+

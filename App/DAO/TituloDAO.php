@@ -26,7 +26,7 @@ class TituloDAO
     public static function getOne($id): bool | array
     {
         $conn = Conexao::getInstance();
-        $sql = "SELECT * FROM TITULO WHERE idtitulo = ?";
+        $sql = "SELECT * FROM TITULO WHERE id_titulo = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
         $conn->execute();
@@ -38,30 +38,32 @@ class TituloDAO
         return false;
     }
 
-    public static function save(Titulo $titulo): bool
+    public static function save(Titulo $titulo): false | string
     {
         $conn = Conexao::getInstance();
-        $sql = "INSERT INTO TITULO(nome_titulo, qtde_paginas_titulo, idiomas_ididiomas) VALUES (?,?,?)";
-        $conn = $conn->prepare($sql);
-        $conn->bindValue(1, $titulo->getNomeTitulo());
-        $conn->bindValue(2, $titulo->getQtdePaginasTitulo());
-        $conn->bindValue(3, $titulo->getIdiomasIdidiomas());
+        $sql = "INSERT INTO TITULO(nome_titulo, paginas_titulo, id_idioma) VALUES (?,?,?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $titulo->getNomeTitulo());
+        $stmt->bindValue(2, $titulo->getPaginasTitulo());
+        $stmt->bindValue(3, $titulo->getIdIdiomas());
 
-        return $conn->execute();
+        $stmt->execute();
+
+        return $conn->lastInsertId();
     }
 
     public static function update(Titulo $titulo): mixed
     {
         $conn = Conexao::getInstance();
-        $sql = "UPDATE TITULO SET nome_titulo = ?, qtde_paginas_titulo = ?, idiomas_ididiomas = ? WHERE idtitulo = ?";
+        $sql = "UPDATE TITULO SET nome_titulo = ?, paginas_titulo = ?, id_idioma = ? WHERE id_titulo = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $titulo->getNomeTitulo());
-        $conn->bindValue(2, $titulo->getQtdePaginasTitulo());
-        $conn->bindValue(3, $titulo->getIdiomasIdidiomas());
+        $conn->bindValue(2, $titulo->getPaginasTitulo());
+        $conn->bindValue(3, $titulo->getIdIdiomas());
 
 
         if($conn->execute()){
-            return self::getOne($titulo->getIdtitulo());
+            return self::getOne($titulo->getId());
         }
 
         return false;
@@ -71,7 +73,7 @@ class TituloDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "DELETE TITULO WHERE idtitulo = ?";
+        $sql = "DELETE TITULO WHERE id_titulo = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
 

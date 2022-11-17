@@ -6,128 +6,96 @@ use App\DAO\ExemplarDAO;
 
 final class Exemplar
 {
-    private $idexemplar;
-    private $numero_de_serie;
-    private $ISBN_10;
-    private $ISBN_13;
-    private $editoras_ideditoras;
-    private $titulo_idtitulo;
+    private $id;
+    private $num_serie;
+    private $isbn_10;
+    private $isbn_13;
     private $status;
+    private $id_editora;
+    private $id_titulo;
 
     /**
-     * @param $idexemplar
-     * @param $numero_de_serie
-     * @param $ISBN_10
-     * @param $ISBN_13
-     * @param $editoras_ideditoras
-     * @param $titulo_idtitulo
+     * @param $id
+     * @param $num_serie
+     * @param $isbn_10
+     * @param $isbn_13
      * @param $status
+     * @param $id_editora
+     * @param $id_titulo
      */
-    public function __construct($idexemplar, $numero_de_serie, $ISBN_10, $ISBN_13, $editoras_ideditoras, $titulo_idtitulo, $status)
+    public function __construct($id = '', $num_serie = '', $isbn_10 = '', $isbn_13 = '', $status = '', $id_editora = '', $id_titulo = '')
     {
-        $this->idexemplar = $idexemplar;
-        $this->numero_de_serie = $numero_de_serie;
-        $this->ISBN_10 = $ISBN_10;
-        $this->ISBN_13 = $ISBN_13;
-        $this->editoras_ideditoras = $editoras_ideditoras;
-        $this->titulo_idtitulo = $titulo_idtitulo;
+        $this->id = $id;
+        $this->num_serie = $num_serie;
+        $this->isbn_10 = $isbn_10;
+        $this->isbn_13 = $isbn_13;
         $this->status = $status;
+        $this->id_editora = $id_editora;
+        $this->id_titulo = $id_titulo;
     }
 
     /**
      * @return mixed
      */
-    public function getIdexemplar()
+    public function getId()
     {
-        return $this->idexemplar;
+        return $this->id;
     }
 
     /**
-     * @param mixed $idexemplar
+     * @param mixed $id
      */
-    public function setIdexemplar($idexemplar): void
+    public function setId($id): void
     {
-        $this->idexemplar = $idexemplar;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNumeroDeSerie()
-    {
-        return $this->numero_de_serie;
-    }
-
-    /**
-     * @param mixed $numero_de_serie
-     */
-    public function setNumeroDeSerie($numero_de_serie): void
-    {
-        $this->numero_de_serie = $numero_de_serie;
+        $this->id = $id;
     }
 
     /**
      * @return mixed
      */
-    public function getISBN10()
+    public function getNumSerie()
     {
-        return $this->ISBN_10;
+        return $this->num_serie;
     }
 
     /**
-     * @param mixed $ISBN_10
+     * @param mixed $num_serie
      */
-    public function setISBN10($ISBN_10): void
+    public function setNumSerie($num_serie): void
     {
-        $this->ISBN_10 = $ISBN_10;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getISBN13()
-    {
-        return $this->ISBN_13;
-    }
-
-    /**
-     * @param mixed $ISBN_13
-     */
-    public function setISBN13($ISBN_13): void
-    {
-        $this->ISBN_13 = $ISBN_13;
+        $this->num_serie = $num_serie;
     }
 
     /**
      * @return mixed
      */
-    public function getEditorasIdeditoras()
+    public function getIsbn10()
     {
-        return $this->editoras_ideditoras;
+        return $this->isbn_10;
     }
 
     /**
-     * @param mixed $editoras_ideditoras
+     * @param mixed $isbn_10
      */
-    public function setEditorasIdeditoras($editoras_ideditoras): void
+    public function setIsbn10($isbn_10): void
     {
-        $this->editoras_ideditoras = $editoras_ideditoras;
+        $this->isbn_10 = $isbn_10;
     }
 
     /**
      * @return mixed
      */
-    public function getTituloIdtitulo()
+    public function getIsbn13()
     {
-        return $this->titulo_idtitulo;
+        return $this->isbn_13;
     }
 
     /**
-     * @param mixed $titulo_idtitulo
+     * @param mixed $isbn_13
      */
-    public function setTituloIdtitulo($titulo_idtitulo): void
+    public function setIsbn13($isbn_13): void
     {
-        $this->titulo_idtitulo = $titulo_idtitulo;
+        $this->isbn_13 = $isbn_13;
     }
 
     /**
@@ -145,6 +113,41 @@ final class Exemplar
     {
         $this->status = $status;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIdEditora()
+    {
+        return $this->id_editora;
+    }
+
+    /**
+     * @param mixed $id_editora
+     */
+    public function setIdEditora($id_editora): void
+    {
+        $this->id_editora = $id_editora;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdTitulo()
+    {
+        return $this->id_titulo;
+    }
+
+    /**
+     * @param mixed $id_titulo
+     */
+    public function setIdTitulo($id_titulo): void
+    {
+        $this->id_titulo = $id_titulo;
+    }
+
+
+
 
     public static function getAll()
     {

@@ -6,33 +6,33 @@ use App\DAO\EditoraDAO;
 
 final class Editora
 {
-    private $ideditoras;
+    private $id;
     private $nome_editora;
 
     /**
-     * @param $ideditoras
+     * @param $id
      * @param $nome_editora
      */
-    public function __construct($ideditoras, $nome_editora)
+    public function __construct($id = '', $nome_editora = '')
     {
-        $this->ideditoras = $ideditoras;
+        $this->id = $id;
         $this->nome_editora = $nome_editora;
     }
 
     /**
      * @return mixed
      */
-    public function getIdeditoras()
+    public function getId()
     {
-        return $this->ideditoras;
+        return $this->id;
     }
 
     /**
-     * @param mixed $ideditoras
+     * @param mixed $id
      */
-    public function setIdeditoras($ideditoras): void
+    public function setId($id): void
     {
-        $this->ideditoras = $ideditoras;
+        $this->id = $id;
     }
 
     /**

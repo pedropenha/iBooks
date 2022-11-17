@@ -6,82 +6,87 @@ use App\DAO\TituloDAO;
 
 final class Titulo
 {
-    private $idtitulo;
+    private $id;
     private $nome_titulo;
-    private $qtde_paginas_titulo;
-    private $idiomas_ididiomas;
+    private $paginas_titulo;
+    private $id_idiomas;
 
-
-    public function __construct($idtitulo = "", $nome_titulo = "", $qtde_paginas_titulo = "", $idiomas_ididiomas = "")
+    /**
+     * @param $id
+     * @param $nome_titulo
+     * @param $paginas_titulo
+     * @param $id_idiomas
+     */
+    public function __construct($id = '', $nome_titulo = '', $paginas_titulo = '', $id_idiomas = '')
     {
-        $this->idtitulo = $idtitulo;
+        $this->id = $id;
         $this->nome_titulo = $nome_titulo;
-        $this->qtde_paginas_titulo = $qtde_paginas_titulo;
-        $this->idiomas_ididiomas = $idiomas_ididiomas;
+        $this->paginas_titulo = $paginas_titulo;
+        $this->id_idiomas = $id_idiomas;
     }
 
     /**
-     * @return mixed|string
+     * @return mixed
      */
-    public function getIdtitulo(): mixed
+    public function getId()
     {
-        return $this->idtitulo;
+        return $this->id;
     }
 
     /**
-     * @param mixed|string $idtitulo
+     * @param mixed $id
      */
-    public function setIdtitulo(mixed $idtitulo): void
+    public function setId($id): void
     {
-        $this->idtitulo = $idtitulo;
+        $this->id = $id;
     }
 
     /**
-     * @return mixed|string
+     * @return mixed
      */
-    public function getNomeTitulo(): mixed
+    public function getNomeTitulo()
     {
         return $this->nome_titulo;
     }
 
     /**
-     * @param mixed|string $nome_titulo
+     * @param mixed $nome_titulo
      */
-    public function setNomeTitulo(mixed $nome_titulo): void
+    public function setNomeTitulo($nome_titulo): void
     {
         $this->nome_titulo = $nome_titulo;
     }
 
     /**
-     * @return mixed|string
+     * @return mixed
      */
-    public function getQtdePaginasTitulo(): mixed
+    public function getPaginasTitulo()
     {
-        return $this->qtde_paginas_titulo;
+        return $this->paginas_titulo;
     }
 
     /**
-     * @param mixed|string $qtde_paginas_titulo
+     * @param mixed $paginas_titulo
      */
-    public function setQtdePaginasTitulo(mixed $qtde_paginas_titulo): void
+    public function setPaginasTitulo($paginas_titulo): void
     {
-        $this->qtde_paginas_titulo = $qtde_paginas_titulo;
+        $this->paginas_titulo = $paginas_titulo;
     }
 
     /**
-     * @return mixed|string
+     * @return mixed
      */
-    public function getIdiomasIdidiomas(): mixed
+    public function getIdIdiomas()
     {
-        return $this->idiomas_ididiomas;
+        return $this->id_idiomas;
     }
 
     /**
-     * @param mixed|string $idiomas_ididiomas
+     * @param mixed $id_idiomas
      */
-    public function setIdiomasIdidiomas(mixed $idiomas_ididiomas): void
+    public function setIdIdiomas($id_idiomas): void
     {
-        $this->idiomas_ididiomas = $idiomas_ididiomas;
+        $this->id_idiomas = $id_idiomas;
     }
 
     public static function getAll()

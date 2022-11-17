@@ -12,7 +12,7 @@ class EditoraDAO
     public static function getAll(): bool | array
     {
         $conn = Conexao::getInstance();
-        $sql = "SELECT * FROM EDITORAS";
+        $sql = "SELECT * FROM EDITORA";
         $conn = $conn->prepare($sql);
 
         if($conn->execute()){
@@ -25,7 +25,7 @@ class EditoraDAO
     public static function getOne($id): bool | array
     {
         $conn = Conexao::getInstance();
-        $sql = "SELECT * FROM EDITORAS WHERE ideditoras = ?";
+        $sql = "SELECT * FROM EDITORA WHERE id_editora = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
         $conn->execute();
@@ -40,7 +40,7 @@ class EditoraDAO
     public static function save(Editora $editora): bool
     {
         $conn = Conexao::getInstance();
-        $sql = "INSERT INTO EDITORAS(nome_editora) VALUES (?)";
+        $sql = "INSERT INTO EDITORA(nome_editora) VALUES (?)";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $editora->getNomeEditora());
 
@@ -50,12 +50,12 @@ class EditoraDAO
     public static function update(Editora $editora): mixed
     {
         $conn = Conexao::getInstance();
-        $sql = "UPDATE EDITORAS SET nome_editora = ? WHERE ideditoras = ?";
+        $sql = "UPDATE EDITORA SET nome_editora = ? WHERE id_editora = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $editora->getNomeEditora());
 
         if($conn->execute()){
-            return self::getOne($editora->getIdeditoras());
+            return self::getOne($editora->getId());
         }
 
         return false;
@@ -65,7 +65,7 @@ class EditoraDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "DELETE EDITORAS WHERE ideditoras = ?";
+        $sql = "DELETE EDITORA WHERE id_editora = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
 

@@ -13,7 +13,7 @@ class IdiomaDAO
     public static function getAll(): bool | array
     {
         $conn = Conexao::getInstance();
-        $sql = "SELECT * FROM IDIOMAS";
+        $sql = "SELECT * FROM IDIOMA";
         $conn = $conn->prepare($sql);
 
         if($conn->execute()){
@@ -26,7 +26,7 @@ class IdiomaDAO
     public static function getOne($id): bool | array
     {
         $conn = Conexao::getInstance();
-        $sql = "SELECT * FROM IDIOMAS WHERE ididiomas = ?";
+        $sql = "SELECT * FROM IDIOMA WHERE id_idioma = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
         $conn->execute();
@@ -41,9 +41,9 @@ class IdiomaDAO
     public static function save(Idioma $idioma): bool
     {
         $conn = Conexao::getInstance();
-        $sql = "INSERT INTO IDIOMAS(idioma_nome) VALUES (?)";
+        $sql = "INSERT INTO IDIOMA(nome_idioma) VALUES (?)";
         $conn = $conn->prepare($sql);
-        $conn->bindValue(1, $idioma->getIdiomaNome());
+        $conn->bindValue(1, $idioma->getNomeIdioma());
 
         return $conn->execute();
     }
@@ -51,13 +51,13 @@ class IdiomaDAO
     public static function update(Idioma $idioma): mixed
     {
         $conn = Conexao::getInstance();
-        $sql = "UPDATE IDIOMAS SET idioma_nome = ? WHERE ididiomas = ?";
+        $sql = "UPDATE IDIOMA SET nome_idioma = ? WHERE id_idioma = ?";
         $conn = $conn->prepare($sql);
-        $conn->bindValue(1, $idioma->getIdiomaNome());
+        $conn->bindValue(1, $idioma->getId());
 
 
         if($conn->execute()){
-            return self::getOne($idioma->getIdidiomas());
+            return self::getOne($idioma->getId());
         }
 
         return false;
@@ -67,7 +67,7 @@ class IdiomaDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "DELETE IDIOMAS WHERE ididiomas = ?";
+        $sql = "DELETE IDIOMA WHERE id_idioma = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $id);
 

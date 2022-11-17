@@ -6,49 +6,49 @@ use App\DAO\IdiomaDAO;
 
 final class Idioma
 {
-    private $ididiomas;
-    private $idioma_nome;
+    private $id;
+    private $nome_idioma;
 
     /**
-     * @param $ididiomas
-     * @param $idioma_nome
+     * @param $id
+     * @param $nome_idioma
      */
-    public function __construct($ididiomas, $idioma_nome)
+    public function __construct($id = '', $nome_idioma = '')
     {
-        $this->ididiomas = $ididiomas;
-        $this->idioma_nome = $idioma_nome;
+        $this->id = $id;
+        $this->nome_idioma = $nome_idioma;
     }
 
     /**
      * @return mixed
      */
-    public function getIdidiomas()
+    public function getId()
     {
-        return $this->ididiomas;
+        return $this->id;
     }
 
     /**
-     * @param mixed $ididiomas
+     * @param mixed $id
      */
-    public function setIdidiomas($ididiomas): void
+    public function setId($id): void
     {
-        $this->ididiomas = $ididiomas;
+        $this->id = $id;
     }
 
     /**
      * @return mixed
      */
-    public function getIdiomaNome()
+    public function getNomeIdioma()
     {
-        return $this->idioma_nome;
+        return $this->nome_idioma;
     }
 
     /**
-     * @param mixed $idioma_nome
+     * @param mixed $nome_idioma
      */
-    public function setIdiomaNome($idioma_nome): void
+    public function setNomeIdioma($nome_idioma): void
     {
-        $this->idioma_nome = $idioma_nome;
+        $this->nome_idioma = $nome_idioma;
     }
 
     public static function getAll()
@@ -63,7 +63,7 @@ final class Idioma
 
     public static function save(Idioma $idioma)
     {
-        return Idioma::save($idioma);
+        return IdiomaDAO::save($idioma);
     }
 
     public static function update(Idioma $idioma)
