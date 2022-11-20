@@ -174,5 +174,10 @@ final class Exemplar
         return ExemplarDAO::delete($id);
     }
 
+    public static function darBaixaLivro($id_exemplar)
+    {
+        return ExemplarDAO::baixaExemplar($id_exemplar);
+    }
+
 
 }

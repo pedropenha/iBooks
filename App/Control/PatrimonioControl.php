@@ -10,7 +10,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 final class PatrimonioControl extends Control
 {
-
     public function buscar_patrimonios(Request $request, Response $response, array $args){
         return $this->encapsular_response(function ($request, $response, $args){
             $patrimonio = new Patrimonio();
@@ -18,14 +17,13 @@ final class PatrimonioControl extends Control
             if($dados)
                 return HttpResponse::status200($dados);
 
-            return HttpResponse::status500();
+            return HttpResponse::status404();
 
         }, $request, $response, $args);
     }
 
     public function buscar_patrimonio(Request $request, Response $response, array $args){
         return $this->encapsular_response(function ($request, $response, $args){
-            $campos_obrigatorios = ['idPatrimonio'];
             $data = $args['id'];
 
             $patrimonio = new Patrimonio();
@@ -62,8 +60,8 @@ final class PatrimonioControl extends Control
             $campos_obrigatorios = ['idPatrimonio', 'nome', 'valor', 'data_compra', 'categoria', 'numero_patrimonio'];
 
             $data = $request->getParsedBody();
-            if(!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
-                return HttpResponse::status401();
+//            if(!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
+//                return HttpResponse::status401();
 
             $patrimonio = new Patrimonio($data['nome'], $data['valor'], $data['data_compra'], $data['categoria'], $data['numero_patrimonio']);
             $patrimonio->setIdPatrimonio($data['idPatrimonio']);

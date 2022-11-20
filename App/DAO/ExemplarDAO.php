@@ -84,4 +84,18 @@ class ExemplarDAO
 
         return $conn->execute();
     }
+
+    public static function baixaExemplar($idExemplar)
+    {
+        $conn = Conexao::getInstance();
+
+        $sql = "UPDATE EXEMPLAR SET STATUS = 1 WHERE id_exemplar = ?";
+        $sql = $conn->prepare($sql);
+        $sql->bindValue(1, $idExemplar);
+
+        if($sql->execute())
+            return true;
+
+        return false;
+    }
 }

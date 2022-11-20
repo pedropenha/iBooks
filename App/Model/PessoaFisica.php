@@ -2,8 +2,6 @@
 
 namespace App\Model;
 
-use App\DAO\PessoaFisicaDAO;
-
 final class PessoaFisica
 {
     private $idPessoaFisica;
@@ -13,7 +11,6 @@ final class PessoaFisica
     private $senha;
 
     /**
-     * @param $idPessoaFisica
      * @param $nome
      * @param $cpf
      * @param $dtNasc
@@ -21,10 +18,10 @@ final class PessoaFisica
      */
     public function __construct($nome = '', $cpf = '', $dtNasc = '', $senha = '')
     {
-        $this->setNome($nome);
-        $this->setCpf($cpf);
-        $this->setDtNasc($dtNasc);
-        $this->setSenha($senha);
+        $this->nome = $nome;
+        $this->cpf = $cpf;
+        $this->dtNasc = $dtNasc;
+        $this->senha = $senha;
     }
 
     /**
@@ -44,96 +41,66 @@ final class PessoaFisica
     }
 
     /**
-     * @return mixed
+     * @return mixed|string
      */
-    public function getNome()
+    public function getNome(): mixed
     {
         return $this->nome;
     }
 
     /**
-     * @param mixed $nome
+     * @param mixed|string $nome
      */
-    public function setNome($nome): void
+    public function setNome(mixed $nome): void
     {
         $this->nome = $nome;
     }
 
     /**
-     * @return mixed
+     * @return mixed|string
      */
-    public function getCpf()
+    public function getCpf(): mixed
     {
         return $this->cpf;
     }
 
     /**
-     * @param mixed $cpf
+     * @param mixed|string $cpf
      */
-    public function setCpf($cpf): void
+    public function setCpf(mixed $cpf): void
     {
         $this->cpf = $cpf;
     }
 
     /**
-     * @return mixed
+     * @return mixed|string
      */
-    public function getDtNasc()
+    public function getDtNasc(): mixed
     {
         return $this->dtNasc;
     }
 
     /**
-     * @param mixed $dtNasc
+     * @param mixed|string $dtNasc
      */
-    public function setDtNasc($dtNasc): void
+    public function setDtNasc(mixed $dtNasc): void
     {
         $this->dtNasc = $dtNasc;
     }
 
     /**
-     * @return mixed
+     * @return mixed|string
      */
-    public function getSenha()
+    public function getSenha(): mixed
     {
         return $this->senha;
     }
 
     /**
-     * @param mixed $senha
+     * @param mixed|string $senha
      */
-    public function setSenha($senha): void
+    public function setSenha(mixed $senha): void
     {
         $this->senha = $senha;
-    }
-
-    public function getAll(): bool | array
-    {
-        return PessoaFisicaDAO::getAll();
-    }
-
-    public function getById($id): bool | array
-    {
-        return PessoaFisicaDAO::getById($id);
-    }
-
-    public function save(PessoaFisica $pessoaFisica): bool
-    {
-        return PessoaFisicaDAO::save($pessoaFisica);
-    }
-
-    public function update(PessoaFisica $pessoaFisica): mixed
-    {
-        return PessoaFisicaDAO::update($pessoaFisica);
-    }
-
-    public function delete($id): bool
-    {
-        return PessoaFisicaDAO::delete($id);
-    }
-
-    public function login($cpf, $senha): bool | array
-    {
-        return PessoaFisicaDAO::login($cpf, $senha);
     }
 }
