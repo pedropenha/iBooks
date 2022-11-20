@@ -52,18 +52,14 @@ final class LivroControl extends Control
 //            if (!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
 //                return HttpResponse::status401();
 
-            $titulo = new Titulo('', $data['nome_titulo'], $data['paginas'], $data['idioma']);
+            $titulo = new Titulo('', $data['nome_titulo'], $data['paginas_titulo'], $data['id_idioma']);
 
             $titulo = $titulo::save($titulo);
 
             if (!$titulo)
                 return HttpResponse::status500();
 
-<<<<<<< HEAD
             $exemplar = new Exemplar('','', $data['isbn_10'], $data['isbn_13'], 0, $data['id_editora'], $titulo);
-=======
-            $exemplar = new Exemplar('','', $data['isbn10'], $data['isbn13'], 0, $data['editora'], $titulo);
->>>>>>> a96641b254ea9339bf41eb9964ea0567bac5fd97
 
             $exemplar = $exemplar::save($exemplar);
 
