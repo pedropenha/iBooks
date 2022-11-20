@@ -4,11 +4,8 @@ namespace App\DAO;
 
 use App\Model\PessoaFisica;
 
-final class PessoaFisicaDAO
+class PessoaFisicaDAO
 {
-    private function __construct()
-    {
-    }
 
     public static function getAll(): array|null
     {
