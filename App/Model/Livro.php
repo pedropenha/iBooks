@@ -16,18 +16,18 @@ final class Livro
         return LivroDAO::getOne($id);
     }
 
-    public static function save(Livro $livro)
-    {
-        return LivroDAO::save($livro);
-    }
-
-    public static function update(Livro $livro)
-    {
-        return LivroDAO::update($livro);
-    }
-
-    public static function delete($id)
-    {
-        return LivroDAO::delete($id);
-    }
+//    public static function save(Livro $livro)
+//    {
+//        return LivroDAO::save($livro);
+//    }
+//
+//    public static function update(Livro $livro)
+//    {
+//        return LivroDAO::update($livro);
+//    }
+//
+//    public static function delete($id)
+//    {
+//        return LivroDAO::delete($id);
+//    }
 }
