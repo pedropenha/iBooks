@@ -9,20 +9,17 @@ final class Titulo
     private $id;
     private $nome_titulo;
     private $paginas_titulo;
-    private $id_idiomas;
 
     /**
      * @param $id
      * @param $nome_titulo
      * @param $paginas_titulo
-     * @param $id_idiomas
      */
-    public function __construct($id = '', $nome_titulo = '', $paginas_titulo = '', $id_idiomas = '')
+    public function __construct($id = '', $nome_titulo = '', $paginas_titulo = '')
     {
         $this->id = $id;
         $this->nome_titulo = $nome_titulo;
         $this->paginas_titulo = $paginas_titulo;
-        $this->id_idiomas = $id_idiomas;
     }
 
     /**
@@ -73,21 +70,6 @@ final class Titulo
         $this->paginas_titulo = $paginas_titulo;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getIdIdiomas()
-    {
-        return $this->id_idiomas;
-    }
-
-    /**
-     * @param mixed $id_idiomas
-     */
-    public function setIdIdiomas($id_idiomas): void
-    {
-        $this->id_idiomas = $id_idiomas;
-    }
 
     public static function getAll()
     {

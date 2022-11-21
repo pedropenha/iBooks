@@ -13,6 +13,7 @@ final class Exemplar
     private $status;
     private $id_editora;
     private $id_titulo;
+    private $id_idioma;
 
     /**
      * @param $id
@@ -22,8 +23,9 @@ final class Exemplar
      * @param $status
      * @param $id_editora
      * @param $id_titulo
+     * @param $id_idioma
      */
-    public function __construct($id = '', $num_serie = '', $isbn_10 = '', $isbn_13 = '', $status = '', $id_editora = '', $id_titulo = '')
+    public function __construct($id = '', $num_serie = '', $isbn_10 = '', $isbn_13 = '', $status = '', $id_editora = '', $id_titulo = '', $id_idioma= '')
     {
         $this->id = $id;
         $this->num_serie = $num_serie;
@@ -32,6 +34,23 @@ final class Exemplar
         $this->status = $status;
         $this->id_editora = $id_editora;
         $this->id_titulo = $id_titulo;
+        $this->id_idioma = $id_idioma;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getIdIdioma(): mixed
+    {
+        return $this->id_idioma;
+    }
+
+    /**
+     * @param mixed|string $id_idioma
+     */
+    public function setIdIdioma(mixed $id_idioma): void
+    {
+        $this->id_idioma = $id_idioma;
     }
 
     /**

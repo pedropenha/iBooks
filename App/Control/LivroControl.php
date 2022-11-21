@@ -45,21 +45,15 @@ final class LivroControl extends Control
     public function inserir_livro(Request $request, Response $response, array $args)
     {
         return $this->encapsular_response(function ($request, $response, $args) {
-            $campos_obrigatorios = ['id_idioma','num_serie', 'id_editora', 'nome_titulo', 'paginas_titulo', 'isbn_10', 'isbn_13'];
+            $campos_obrigatorios = ['id_idioma', 'id_editora', 'id_titulo', 'paginas_titulo', 'isbn_10', 'isbn_13'];
 
             $data = $request->getParsedBody();
 
 //            if (!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
 //                return HttpResponse::status401();
 
-            $titulo = new Titulo('', $data['nome_titulo'], $data['paginas_titulo'], $data['id_idioma']);
 
-            $titulo = $titulo::save($titulo);
-
-            if (!$titulo)
-                return HttpResponse::status500();
-
-            $exemplar = new Exemplar('','', $data['isbn_10'], $data['isbn_13'], 0, $data['id_editora'], $titulo);
+            $exemplar = new Exemplar('','', $data['isbn_10'], $data['isbn_13'], 0, $data['id_editora'], $data['id_titulo'], $data['id_idioma']);
 
             $exemplar = $exemplar::save($exemplar);
 
@@ -96,13 +90,10 @@ final class LivroControl extends Control
 
     public function deletar_livro(Request $request, Response $response, array $args) {
         return $this->encapsular_response(function ($request, $response, $args){
-            $campos_obrigatorios = ['id_exemplar'];
-
-            $data = $request->getParsedBody();
 
             $exemplar = new Exemplar();
 
-            $exemplar = $exemplar::delete($data['id_exemplar']);
+            $exemplar = $exemplar::delete($args['id']);
 
             if (!$exemplar)
                 return HttpResponse::status500();

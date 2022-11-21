@@ -45,7 +45,7 @@ $app->group('/iBooks/livro', function (\Slim\Routing\RouteCollectorProxy $group)
 
     $group->post('/editar', \App\Control\LivroControl::class.':editar_livro');
 
-    $group->post('/deletar', \App\Control\LivroControl::class.':deletar_livro');
+    $group->delete('/{id}', \App\Control\LivroControl::class.':deletar_livro');
 });
 
 $app->group('/iBooks/baixaLivro', function (\Slim\Routing\RouteCollectorProxy $group){

@@ -39,8 +39,10 @@ class ExemplarDAO
 
     public static function save(Exemplar $exemplar): bool
     {
+//        var_dump($exemplar);
+//        exit();
         $conn = Conexao::getInstance();
-        $sql = "INSERT INTO EXEMPLAR(num_serie, isbn_10, isbn_13, status, id_editora, id_titulo) VALUES (?,?,?,?,?,?)";
+        $sql = "INSERT INTO EXEMPLAR(num_serie, isbn_10, isbn_13, status, id_editora, id_titulo, id_idioma) VALUES (?,?,?,?,?,?,?)";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $exemplar->getNumSerie());
         $conn->bindValue(2, $exemplar->getISBN10());
@@ -48,6 +50,7 @@ class ExemplarDAO
         $conn->bindValue(4, $exemplar->getStatus());
         $conn->bindValue(5, $exemplar->getIdEditora());
         $conn->bindValue(6, $exemplar->getIdTitulo());
+        $conn->bindValue(7, $exemplar->getIdIdioma());
 
 
         return $conn->execute();
@@ -56,13 +59,14 @@ class ExemplarDAO
     public static function update(Exemplar $exemplar): mixed
     {
         $conn = Conexao::getInstance();
-        $sql = "UPDATE EXEMPLAR SET isbn_10 = ?, isbn_13 = ?, status = ?, id_editora = ?, id_titulo = ? WHERE id_exemplar = ?";
+        $sql = "UPDATE EXEMPLAR SET isbn_10 = ?, isbn_13 = ?, status = ?, id_editora = ?, id_titulo = ?, id_idioma = ? WHERE id_exemplar = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $exemplar->getISBN10());
         $conn->bindValue(2, $exemplar->getISBN13());
         $conn->bindValue(3, $exemplar->getStatus());
         $conn->bindValue(4, $exemplar->getIdEditora());
         $conn->bindValue(5, $exemplar->getIdTitulo());
+        $conn->bindValue(5, $exemplar->getIdIdioma());
         $conn->bindValue(6, $exemplar->getId());
 
 
