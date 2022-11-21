@@ -17,8 +17,7 @@ final class LivroControl extends Control
     public function buscar_livros(Request $request, Response $response, array $args)
     {
         return $this->encapsular_response(function ($request, $response, $args) {
-            $livro = new Livro();
-            $dados = $livro->getAll();
+            $dados = Livro::getAll();
             if ($dados)
                 return HttpResponse::status200($dados);
 
@@ -30,15 +29,10 @@ final class LivroControl extends Control
     public function buscar_livro(Request $request, Response $response, array $args)
     {
         return $this->encapsular_response(function ($request, $response, $args) {
-            $campos_obrigatorios = ['idexemplar'];
-            $data = $request->getParsedBody();
 
-            if (!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
-                return HttpResponse::status401();
+            $data = $args['id'];
 
-            $livro = new Livro();
-
-            $dados = $livro->getOne($data['idexemplar']);
+            $dados = Livro::getById($data);
 
             if ($dados)
                 return HttpResponse::status200($dados);
@@ -58,14 +52,14 @@ final class LivroControl extends Control
 //            if (!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
 //                return HttpResponse::status401();
 
-            $titulo = new Titulo('', $data['nome_titulo'], $data['paginas'], $data['idioma']);
+            $titulo = new Titulo('', $data['nome_titulo'], $data['paginas_titulo'], $data['id_idioma']);
 
             $titulo = $titulo::save($titulo);
 
             if (!$titulo)
                 return HttpResponse::status500();
 
-            $exemplar = new Exemplar('','', $data['isbn10'], $data['isbn13'], 0, $data['editora'], $titulo);
+            $exemplar = new Exemplar('','', $data['isbn_10'], $data['isbn_13'], 0, $data['id_editora'], $titulo);
 
             $exemplar = $exemplar::save($exemplar);
 
@@ -82,9 +76,6 @@ final class LivroControl extends Control
 
             $data = $request->getParsedBody();
 
-            if(!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
-                return HttpResponse::status401();
-
             $titulo = new Titulo($data['id_titulo'], $data['nome_titulo'], $data['paginas_titulo'], $data['id_idioma']);
 
             $titulo = $titulo::update($titulo);
@@ -92,7 +83,7 @@ final class LivroControl extends Control
             if (!$titulo)
                 return HttpResponse::status500();
 
-            $exemplar = new Exemplar($data['id_exemplar'], '', $data['isbn_10'], $data['isbn_13'], $data['status'], $data['id_editora'], $data['id_titulo']);
+            $exemplar = new Exemplar($data['id_exemplar'], '', $data['isbn_10'], $data['isbn_13'],0, $data['id_editora'], $data['id_titulo']);
 
             $exemplar = $exemplar::update($exemplar);
 
@@ -109,9 +100,6 @@ final class LivroControl extends Control
 
             $data = $request->getParsedBody();
 
-            if(!UtilValidator::validar_campos_obrigatorios($data, $campos_obrigatorios))
-                return HttpResponse::status401();
-
             $exemplar = new Exemplar();
 
             $exemplar = $exemplar::delete($data['id_exemplar']);
@@ -126,8 +114,7 @@ final class LivroControl extends Control
     public function buscar_editoras(Request $request, Response $response, array $args)
     {
         return $this->encapsular_response(function ($request, $response, $args) {
-            $editora = new Editora();
-            $dados = $editora->getAll();
+            $dados = Editora::getAll();
             if ($dados)
                 return HttpResponse::status200($dados);
 
@@ -139,8 +126,19 @@ final class LivroControl extends Control
     public function buscar_idiomas(Request $request, Response $response, array $args)
     {
         return $this->encapsular_response(function ($request, $response, $args) {
-            $idioma = new Idioma();
-            $dados = $idioma->getAll();
+            $dados = Idioma::getAll();
+            if ($dados)
+                return HttpResponse::status200($dados);
+
+            return HttpResponse::status404();
+
+        }, $request, $response, $args);
+    }
+
+    public function buscar_titulos(Request $request, Response $response, array $args)
+    {
+        return $this->encapsular_response(function ($request, $response, $args) {
+            $dados = Titulo::getAll();
             if ($dados)
                 return HttpResponse::status200($dados);
 
