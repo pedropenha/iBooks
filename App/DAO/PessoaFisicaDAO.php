@@ -94,14 +94,14 @@ class PessoaFisicaDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "SELECT * FROM PessoaFisica WHERE cpf = ? AND senha = ?";
+        $sql = "SELECT id_pessoa_fisica, nome, nivel_acesso FROM pessoa_fisica WHERE cpf = ? AND senha = ?";
         $conn = $conn->prepare($sql);
 
         $conn->bindValue(1, $cpf);
         $conn->bindValue(2, $senha);
         $conn->execute();
         if ($conn->rowCount() > 0)
-            return $conn->fetchAll(\PDO::FETCH_ASSOC);
+            return $conn->fetch(\PDO::FETCH_ASSOC);
 
         return false;
     }

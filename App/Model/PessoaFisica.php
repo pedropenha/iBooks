@@ -2,6 +2,8 @@
 
 namespace App\Model;
 
+use App\DAO\PessoaFisicaDAO;
+
 final class PessoaFisica
 {
     private $idPessoaFisica;
@@ -102,5 +104,10 @@ final class PessoaFisica
     public function setSenha(mixed $senha): void
     {
         $this->senha = $senha;
+    }
+
+    public static function login($cpf, $senha)
+    {
+        return PessoaFisicaDAO::login($cpf, $senha);
     }
 }
