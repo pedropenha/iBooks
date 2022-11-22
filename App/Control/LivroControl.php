@@ -45,7 +45,7 @@ final class LivroControl extends Control
     public function inserir_livro(Request $request, Response $response, array $args)
     {
         return $this->encapsular_response(function ($request, $response, $args) {
-            $campos_obrigatorios = ['id_idioma', 'id_editora', 'id_titulo', 'paginas_titulo', 'isbn_10', 'isbn_13'];
+            //$campos_obrigatorios = ['id_idioma', 'id_editora', 'id_titulo', 'paginas_titulo', 'isbn_10', 'isbn_13'];
 
             $data = $request->getParsedBody();
 
@@ -53,7 +53,7 @@ final class LivroControl extends Control
 //                return HttpResponse::status401();
 
 
-            $exemplar = new Exemplar('','', $data['isbn_10'], $data['isbn_13'], 0, $data['id_editora'], $data['id_titulo'], $data['id_idioma']);
+            $exemplar = new Exemplar('','', $data['isbn_10'], $data['isbn_13'], 0, $data['paginas_exemplar'], $data['id_editora'], $data['id_titulo'], $data['id_idioma']);
 
             $exemplar = $exemplar::save($exemplar);
 
@@ -66,18 +66,10 @@ final class LivroControl extends Control
 
     public function editar_livro(Request $request, Response $response, array $args) {
         return $this->encapsular_response(function ($request, $response, $args){
-            $campos_obrigatorios = ['id_exemplar','id_idioma', 'id_editora', 'id_titulo', 'nome_titulo', 'paginas_titulo', 'isbn_10', 'isbn_13', 'status'];
 
             $data = $request->getParsedBody();
 
-            $titulo = new Titulo($data['id_titulo'], $data['nome_titulo'], $data['paginas_titulo'], $data['id_idioma']);
-
-            $titulo = $titulo::update($titulo);
-
-            if (!$titulo)
-                return HttpResponse::status500();
-
-            $exemplar = new Exemplar($data['id_exemplar'], '', $data['isbn_10'], $data['isbn_13'],0, $data['id_editora'], $data['id_titulo']);
+            $exemplar = new Exemplar($data['id_exemplar'], '', $data['isbn_10'], $data['isbn_13'],0, $data['paginas_exemplar'], $data['id_editora'], $data['id_titulo'], $data["id_idioma"]);
 
             $exemplar = $exemplar::update($exemplar);
 
@@ -87,6 +79,7 @@ final class LivroControl extends Control
             return  HttpResponse::status200('deu certo essa porra');
         }, $request, $response, $args);
     }
+
 
     public function deletar_livro(Request $request, Response $response, array $args) {
         return $this->encapsular_response(function ($request, $response, $args){

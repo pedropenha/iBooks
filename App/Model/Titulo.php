@@ -8,18 +8,16 @@ final class Titulo
 {
     private $id;
     private $nome_titulo;
-    private $paginas_titulo;
 
     /**
      * @param $id
      * @param $nome_titulo
      * @param $paginas_titulo
      */
-    public function __construct($id = '', $nome_titulo = '', $paginas_titulo = '')
+    public function __construct($id = '', $nome_titulo = '')
     {
         $this->id = $id;
         $this->nome_titulo = $nome_titulo;
-        $this->paginas_titulo = $paginas_titulo;
     }
 
     /**
@@ -53,23 +51,6 @@ final class Titulo
     {
         $this->nome_titulo = $nome_titulo;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getPaginasTitulo()
-    {
-        return $this->paginas_titulo;
-    }
-
-    /**
-     * @param mixed $paginas_titulo
-     */
-    public function setPaginasTitulo($paginas_titulo): void
-    {
-        $this->paginas_titulo = $paginas_titulo;
-    }
-
 
     public static function getAll()
     {

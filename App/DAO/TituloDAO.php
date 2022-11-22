@@ -41,10 +41,9 @@ class TituloDAO
     public static function save(Titulo $titulo): false | string
     {
         $conn = Conexao::getInstance();
-        $sql = "INSERT INTO TITULO(nome_titulo, paginas_titulo) VALUES (?,?,?)";
+        $sql = "INSERT INTO TITULO(nome_titulo) VALUES (?)";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $titulo->getNomeTitulo());
-        $stmt->bindValue(2, $titulo->getPaginasTitulo());
 
         $stmt->execute();
 
@@ -54,11 +53,10 @@ class TituloDAO
     public static function update(Titulo $titulo): mixed
     {
         $conn = Conexao::getInstance();
-        $sql = "UPDATE TITULO SET nome_titulo = ?, paginas_titulo = ? WHERE id_titulo = ?";
+        $sql = "UPDATE TITULO SET nome_titulo = ? WHERE id_titulo = ?";
         $conn = $conn->prepare($sql);
         $conn->bindValue(1, $titulo->getNomeTitulo());
-        $conn->bindValue(2, $titulo->getPaginasTitulo());
-        $conn->bindValue(4, $titulo->getId());
+        $conn->bindValue(2, $titulo->getId());
 
 
         if($conn->execute()){

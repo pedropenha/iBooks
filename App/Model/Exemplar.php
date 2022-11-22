@@ -11,6 +11,7 @@ final class Exemplar
     private $isbn_10;
     private $isbn_13;
     private $status;
+    private $paginas_exemplar;
     private $id_editora;
     private $id_titulo;
     private $id_idioma;
@@ -21,21 +22,41 @@ final class Exemplar
      * @param $isbn_10
      * @param $isbn_13
      * @param $status
+     * @param $paginas_exemplar
      * @param $id_editora
      * @param $id_titulo
      * @param $id_idioma
      */
-    public function __construct($id = '', $num_serie = '', $isbn_10 = '', $isbn_13 = '', $status = '', $id_editora = '', $id_titulo = '', $id_idioma= '')
+    public function __construct($id = '', $num_serie = '', $isbn_10 = '', $isbn_13 = '', $status = '', $paginas_exemplar = '',$id_editora = '', $id_titulo = '', $id_idioma= '')
     {
         $this->id = $id;
         $this->num_serie = $num_serie;
         $this->isbn_10 = $isbn_10;
         $this->isbn_13 = $isbn_13;
         $this->status = $status;
+        $this->paginas_exemplar = $paginas_exemplar;
         $this->id_editora = $id_editora;
         $this->id_titulo = $id_titulo;
         $this->id_idioma = $id_idioma;
     }
+
+    /**
+     * @return mixed|string
+     */
+    public function getPaginasExemplar(): mixed
+    {
+        return $this->paginas_exemplar;
+    }
+
+    /**
+     * @param mixed|string $paginas_exemplar
+     */
+    public function setPaginasExemplar(mixed $paginas_exemplar): void
+    {
+        $this->paginas_exemplar = $paginas_exemplar;
+    }
+
+
 
     /**
      * @return mixed|string
