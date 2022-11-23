@@ -131,4 +131,15 @@ final class LivroControl extends Control
         }, $request, $response, $args);
     }
 
+    public function buscar_agrupado(Request $request, Response $response, array $args)
+    {
+        return $this->encapsular_response(function ($request, $response, $args) {
+            $dados = Livro::buscar_agrupado();
+            if ($dados)
+                return HttpResponse::status200($dados);
+
+            return HttpResponse::status404();
+        }, $request, $response, $args);
+    }
+
 }

@@ -33,6 +33,8 @@ $app->group('/iBooks/login', function (\Slim\Routing\RouteCollectorProxy $group)
 $app->group('/iBooks/livro', function (\Slim\Routing\RouteCollectorProxy $group) {
     $group->get('/', \App\Control\LivroControl::class.':buscar_livros');
 
+    $group->get('/grupo', \App\Control\LivroControl::class.':buscar_agrupado');
+
     $group->get('/idiomas', \App\Control\LivroControl::class.':buscar_idiomas');
 
     $group->get('/editoras', \App\Control\LivroControl::class.':buscar_editoras');
@@ -46,10 +48,16 @@ $app->group('/iBooks/livro', function (\Slim\Routing\RouteCollectorProxy $group)
     $group->post('/editar', \App\Control\LivroControl::class.':editar_livro');
 
     $group->delete('/{id}', \App\Control\LivroControl::class.':deletar_livro');
+
+
 });
 
 $app->group('/iBooks/baixaLivro', function (\Slim\Routing\RouteCollectorProxy $group){
    $group->post('/', \App\Control\BaixaDeLivroControl::class.':baixa_livro');
+});
+
+$app->group('/iBooks/filaDeEspera', function (\Slim\Routing\RouteCollectorProxy $group){
+    $group->post('/', \App\Control\FilaDeESperaControl::class.':entrar_fila');
 });
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {

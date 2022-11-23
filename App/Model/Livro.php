@@ -16,6 +16,11 @@ final class Livro
         return LivroDAO::getOne($id);
     }
 
+    public static function  buscar_agrupado()
+    {
+        return LivroDAO::buscar_agrupado();
+    }
+
 //    public static function save(Livro $livro)
 //    {
 //        return LivroDAO::save($livro);
