@@ -62,6 +62,10 @@ $app->group('/iBooks/filaDeEspera', function (\Slim\Routing\RouteCollectorProxy 
     $group->post('/', \App\Control\FilaDeESperaControl::class.':entrar_fila');
 });
 
+$app->group('/iBooks/emprestimo', function (\Slim\Routing\RouteCollectorProxy $group){
+   $group->post('/', \App\Control\EmprestimoControl::class.':emprestar_livro');
+});
+
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
     throw new \Slim\Exception\HttpNotFoundException($request);
 });

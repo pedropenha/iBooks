@@ -219,5 +219,13 @@ final class Exemplar
         return ExemplarDAO::baixaExemplar($id_exemplar);
     }
 
+    public static function atualizaStatus($id_exemplar, $status){
+        return ExemplarDAO::atualizaStatus($id_exemplar, $status);
+    }
+
+    public static function podeEmprestar($id_exemplar){
+        return ExemplarDAO::podeEmprestar($id_exemplar);
+    }
+
 
 }

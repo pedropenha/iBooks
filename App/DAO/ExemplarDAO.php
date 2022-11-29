@@ -6,23 +6,24 @@ use App\Model\Exemplar;
 
 class ExemplarDAO
 {
-    private function __construct(){
+    private function __construct()
+    {
     }
 
-    public static function getAll(): bool | array
+    public static function getAll(): bool|array
     {
         $conn = Conexao::getInstance();
         $sql = "SELECT * FROM EXEMPLAR";
         $conn = $conn->prepare($sql);
 
-        if($conn->execute()){
+        if ($conn->execute()) {
             return $conn->fetchAll();
         }
 
         return false;
     }
 
-    public static function getOne($id): bool | array
+    public static function getOne($id): bool|array
     {
         $conn = Conexao::getInstance();
         $sql = "SELECT * FROM EXEMPLAR WHERE id_exemplar = ?";
@@ -30,7 +31,7 @@ class ExemplarDAO
         $conn->bindValue(1, $id);
         $conn->execute();
 
-        if($conn->rowCount() > 0){
+        if ($conn->rowCount() > 0) {
             return $conn->fetch(\PDO::FETCH_ASSOC);
         }
 
@@ -72,8 +73,7 @@ class ExemplarDAO
         $conn->bindValue(8, $exemplar->getId());
 
 
-
-        if($conn->execute()){
+        if ($conn->execute()) {
             return self::getOne($exemplar->getId());
         }
 
@@ -99,9 +99,38 @@ class ExemplarDAO
         $sql = $conn->prepare($sql);
         $sql->bindValue(1, $idExemplar);
 
+        if ($sql->execute())
+            return true;
+
+        return false;
+    }
+
+    public static function atualizaStatus($id_exemplar, $status){
+        $conn = Conexao::getInstance();
+
+        $sql = "UPDATE exemplar SET status = ? WHERE id_exemplar = ?";
+        $sql = $conn->prepare($sql);
+        $sql->bindValue(1, $status);
+        $sql->bindValue(2, $id_exemplar);
+
         if($sql->execute())
             return true;
 
         return false;
+    }
+
+    public static function podeEmprestar($id_exemplar){
+        $conn = Conexao::getInstance();
+
+        $sql = "SELECT * FROM exemplar WHERE status = 0 AND id_exemplar = ?";
+        $sql = $conn->prepare($sql);
+        $sql->bindValue(1, $id_exemplar);
+
+        if($sql->execute()){
+            if($sql->rowCount() > 0)
+                return false;
+        }
+
+        return true;
     }
 }
