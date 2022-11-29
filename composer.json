@@ -9,7 +9,7 @@
         "tuupola/slim-jwt-auth": "3.5.2",
         "tuupola/cors-middleware": "^1.2",
         "tuupola/slim-basic-auth": "^3.3",
-        "php": "^8.0",
+        "php": "^7.0",
         "psr/http-message": "^1.0",
         "psr/http-server-middleware": "^1.0",
         "psr/log": "1.1",

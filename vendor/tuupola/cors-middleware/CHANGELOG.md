@@ -2,9 +2,30 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## [1.4.3](https://github.com/tuupola/cors-middleware/compare/1.4.2...1.4.3) - 2020-10-11
+### Fixed
+- TSanitizedOptions causing PHPStan error ([#78](https://github.com/tuupola/cors-middleware/issues/78), [#79](https://github.com/tuupola/cors-middleware/pull/79)).
+
+## [1.4.2](https://github.com/tuupola/cors-middleware/compare/1.4.1...1.4.2) - 2022-10-10
+### Fixed
+- AssertionError if user had `zend.assertions` enabled php.ini ([#75](https://github.com/tuupola/cors-middleware/pull/75), [#76](https://github.com/tuupola/cors-middleware/pull/76)).
+
+## [1.4.1](https://github.com/tuupola/cors-middleware/compare/1.4.0...1.4.1) - 2022-10-07
+### Fixed
+- PHPStan annotations for the constructor ([#73](https://github.com/tuupola/cors-middleware/pull/73)).
+
+## [1.4.0](https://github.com/tuupola/cors-middleware/compare/1.3.0...1.4.0) - 2022-10-06
+### Added
+- Support for `neomerx/cors-psr7:^3.0` ([#72](https://github.com/tuupola/cors-middleware/pull/72)).
+
+### Changed
+- PHP 7.2 is now the minimum requirement ([#63](https://github.com/tuupola/cors-middleware/pull/63)).
+- PHPStan now uses strict rules ([#63](https://github.com/tuupola/cors-middleware/pull/63)).
+- Upgrade to `neomerx/cors-psr7:^2.0` ([#67](https://github.com/tuupola/cors-middleware/pull/67)).
+
 ## [1.3.0](https://github.com/tuupola/cors-middleware/compare/1.2.1...1.3.0) - 2022-04-13
 ### Added
-- Add support for wildcard origins ([#56](https://github.com/tuupola/cors-middleware/pull/56)).
+- Support for wildcard origins ([#56](https://github.com/tuupola/cors-middleware/pull/56)).
 
 ## [1.2.1](https://github.com/tuupola/cors-middleware/compare/1.2.0...1.2.1) - 2020-10-29
 ### Fixed

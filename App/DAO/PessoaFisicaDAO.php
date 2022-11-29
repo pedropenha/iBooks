@@ -7,7 +7,7 @@ use App\Model\PessoaFisica;
 class PessoaFisicaDAO
 {
 
-    public static function getAll(): array|null
+    public static function getAll()
     {
         $conn = Conexao::getInstance();
 
@@ -22,7 +22,7 @@ class PessoaFisicaDAO
         return null;
     }
 
-    public static function getById($idPessoaFisica): array|null
+    public static function getById($idPessoaFisica)
     {
         $conn = Conexao::getInstance();
 
@@ -42,16 +42,17 @@ class PessoaFisicaDAO
     {
         $conn = Conexao::getInstance();
 
-        $sql = "INSERT INTO PessoaFisica (nome, cpf, dtNasc, senha) VALUES (?,?,?,?)";
-        $conn = $conn->prepare($sql);
+        $sql = "INSERT INTO pessoa_fisica (nome, cpf, dtNasc, senha, nivel_acesso) VALUES (?,?,?,?,?)";
+        $sql = $conn->prepare($sql);
 
-        $conn->bindValue(1, $pessoaFisica->getNome());
-        $conn->bindValue(2, $pessoaFisica->getCpf());
-        $conn->bindValue(3, $pessoaFisica->getDtNasc());
-        $conn->bindValue(4, $pessoaFisica->getSenha());
+        $sql->bindValue(1, $pessoaFisica->getNome());
+        $sql->bindValue(2, $pessoaFisica->getCpf());
+        $sql->bindValue(3, $pessoaFisica->getDtNasc());
+        $sql->bindValue(4, $pessoaFisica->getSenha());
+        $sql->bindValue(5, $pessoaFisica->getNivel());
 
-        if ($conn->execute())
-            return true;
+        if ($sql->execute())
+            return $conn ->lastInsertId();
 
         return false;
     }
@@ -90,7 +91,7 @@ class PessoaFisicaDAO
         return false;
     }
 
-    public static function login($cpf, $senha): bool | array
+    public static function login($cpf, $senha)
     {
         $conn = Conexao::getInstance();
 

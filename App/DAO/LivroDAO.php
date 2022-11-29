@@ -7,7 +7,7 @@ class LivroDAO
     private function __construct(){
     }
 
-    public static function getAll(): bool | array
+    public static function getAll()
     {
         $conn = Conexao::getInstance();
         $sql = "SELECT * FROM EXEMPLAR as E INNER JOIN TITULO as T ON E.ID_TITULO = T.ID_TITULO
@@ -22,7 +22,7 @@ class LivroDAO
         return false;
     }
 
-    public static function getOne($ID): bool | array
+    public static function getOne($ID)
     {
         $conn = Conexao::getInstance();
         $sql = "SELECT * FROM EXEMPLAR as E INNER JOIN TITULO as T ON E.ID_TITULO = T.ID_TITULO

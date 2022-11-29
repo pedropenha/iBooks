@@ -39,10 +39,10 @@ use Closure;
 use Neomerx\Cors\Analyzer as CorsAnalyzer;
 use Neomerx\Cors\Contracts\AnalysisResultInterface as CorsAnalysisResultInterface;
 use Neomerx\Cors\Contracts\Constants\CorsResponseHeaders;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Tuupola\Http\Factory\ResponseFactory;
 use Tuupola\Middleware\Settings as CorsSettings;
@@ -51,13 +51,27 @@ final class CorsMiddleware implements MiddlewareInterface
 {
     use DoublePassTrait;
 
-    /**
-     * @var \Psr\Log\LoggerInterface|null
-     */
+    /** @var int */
+    private const PORT_HTTP = 80;
+
+    /** @var int */
+    private const PORT_HTTPS = 443;
+
+    /** @var LoggerInterface|null */
     private $logger;
 
     /**
-     * @var mixed[]
+     * @var array{
+     *  origin: array<string>,
+     *  methods: array<string>|callable|null,
+     *  "headers.allow": array<string>,
+     *  "headers.expose": array<string>,
+     *  credentials: bool,
+     *  "origin.server": null|string,
+     *  cache: int,
+     *  error: null|callable,
+     *  logger: null|LoggerInterface,
+     * }
      */
     private $options = [
         "origin" => ["*"],
@@ -67,15 +81,30 @@ final class CorsMiddleware implements MiddlewareInterface
         "credentials" => false,
         "origin.server" => null,
         "cache" => 0,
-        "error" => null
+        "error" => null,
+        "logger" => null,
     ];
 
+    /**
+     * @param array{
+     *  origin?: string|array<string>,
+     *  methods?: array<string>|callable|null,
+     *  "headers.allow"?: array<string>,
+     *  "headers.expose"?: array<string>,
+     *  credentials?: bool,
+     *  "origin.server"?: null|string,
+     *  cache?: int,
+     *  error?: null|callable,
+     *  logger?: null|LoggerInterface,
+     * } $options
+     */
     public function __construct(array $options = [])
     {
         /* TODO: This only exists to for BC. */
         if (isset($options["origin"])) {
             $options["origin"] = (array) $options["origin"];
         }
+
         /* Store passed in options overwriting any defaults. */
         $this->hydrate($options);
     }
@@ -88,9 +117,10 @@ final class CorsMiddleware implements MiddlewareInterface
         $response = (new ResponseFactory())->createResponse();
 
         $analyzer = CorsAnalyzer::instance($this->buildSettings($request, $response));
-        if ($this->logger) {
+        if ($this->logger !== null) {
             $analyzer->setLogger($this->logger);
         }
+
         $cors = $analyzer->analyze($request);
 
         switch ($cors->getRequestType()) {
@@ -113,11 +143,13 @@ final class CorsMiddleware implements MiddlewareInterface
                 $cors_headers = $cors->getResponseHeaders();
                 foreach ($cors_headers as $header => $value) {
                     /* Diactoros errors on integer values. */
-                    if (false === is_array($value)) {
-                        $value = (string)$value;
+                    if (! is_array($value)) {
+                        $value = (string) $value;
                     }
+
                     $response = $response->withHeader($header, $value);
                 }
+
                 return $response->withStatus(200);
             case CorsAnalysisResultInterface::TYPE_REQUEST_OUT_OF_CORS_SCOPE:
                 return $handler->handle($request);
@@ -129,11 +161,13 @@ final class CorsMiddleware implements MiddlewareInterface
 
                 foreach ($cors_headers as $header => $value) {
                     /* Diactoros errors on integer values. */
-                    if (false === is_array($value)) {
-                        $value = (string)$value;
+                    if (! is_array($value)) {
+                        $value = (string) $value;
                     }
+
                     $response = $response->withHeader($header, $value);
                 }
+
                 return $response;
         }
     }
@@ -154,7 +188,12 @@ final class CorsMiddleware implements MiddlewareInterface
                 /* Try to use setter */
                 call_user_func($callable, $value);
             } else {
-                /* Or fallback to setting option directly */
+                /**
+                 * Or fallback to setting option directly
+                 * Shouldn't be in use as every option is covered by setters
+                 *
+                 * @phpstan-ignore-next-line
+                 */
                 $this->options[$key] = $value;
             }
         }
@@ -167,28 +206,33 @@ final class CorsMiddleware implements MiddlewareInterface
     {
         $settings = new CorsSettings();
 
-        $origin = array_fill_keys((array) $this->options["origin"], true);
-        $settings->setRequestAllowedOrigins($origin);
+        $serverOrigin = $this->determineServerOrigin();
+
+        $settings->init(
+            $serverOrigin["scheme"],
+            $serverOrigin["host"],
+            $serverOrigin["port"]
+        );
+
+        $settings->setAllowedOrigins($this->options["origin"]);
 
         if (is_callable($this->options["methods"])) {
             $methods = (array) $this->options["methods"]($request, $response);
         } else {
-            $methods = $this->options["methods"];
+            $methods = (array) $this->options["methods"];
         }
-        $methods = array_fill_keys($methods, true);
-        $settings->setRequestAllowedMethods($methods);
 
-        $headers = array_fill_keys($this->options["headers.allow"], true);
-        $headers = array_change_key_case($headers, CASE_LOWER);
-        $settings->setRequestAllowedHeaders($headers);
+        $settings->setAllowedMethods($methods);
 
-        $headers = array_fill_keys($this->options["headers.expose"], true);
-        $settings->setResponseExposedHeaders($headers);
+        /* transform all headers to lowercase */
+        $headers = array_change_key_case($this->options["headers.allow"]);
 
-        $settings->setRequestCredentialsSupported($this->options["credentials"]);
+        $settings->setAllowedHeaders($headers);
 
-        if (is_string($this->options["origin.server"])) {
-            $settings->setServerOrigin($this->options["origin.server"]);
+        $settings->setExposedHeaders($this->options["headers.expose"]);
+
+        if ($this->options["credentials"]) {
+            $settings->setCredentialsSupported();
         }
 
         $settings->setPreFlightCacheMaxAge($this->options["cache"]);
@@ -197,14 +241,51 @@ final class CorsMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Edge cannot handle multiple Access-Control-Expose-Headers headers
+     * Try to determine the server origin uri fragments
+     *
+     * @return array{scheme: string, host: string, port: int}
+     */
+    private function determineServerOrigin(): array
+    {
+        /* Set defaults */
+        $url = [
+            "scheme" => "https",
+            "host" => "localhost",
+            "port" => self::PORT_HTTPS,
+        ];
+
+        /* Load details from server origin */
+        if (is_string($this->options["origin.server"])) {
+            /** @var false|array{scheme: string, host: string, port?: int} $url_chunks */
+            $url_chunks = parse_url($this->options["origin.server"]);
+            if ($url_chunks !== false) {
+                $url = $url_chunks;
+            }
+
+            if (! array_key_exists("port", $url)) {
+                $url["port"] = $url["scheme"] === "https" ? self::PORT_HTTPS : self::PORT_HTTP;
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Edge cannot handle Access-Control-Expose-Headers having a trailing whitespace after the comma
+     *
+     * @see https://github.com/tuupola/cors-middleware/issues/40
      */
     private function fixHeaders(array $headers): array
     {
         if (isset($headers[CorsResponseHeaders::EXPOSE_HEADERS])) {
             $headers[CorsResponseHeaders::EXPOSE_HEADERS] =
-                implode(",", $headers[CorsResponseHeaders::EXPOSE_HEADERS]);
+                str_replace(
+                    " ",
+                    "",
+                    $headers[CorsResponseHeaders::EXPOSE_HEADERS]
+                );
         }
+
         return $headers;
     }
 
@@ -303,10 +384,11 @@ final class CorsMiddleware implements MiddlewareInterface
     ): ResponseInterface {
         if (is_callable($this->options["error"])) {
             $handler_response = $this->options["error"]($request, $response, $arguments);
-            if (is_a($handler_response, "\Psr\Http\Message\ResponseInterface")) {
+            if (is_a($handler_response, ResponseInterface::class)) {
                 return $handler_response;
             }
         }
+
         return $response;
     }
 }

@@ -11,6 +11,8 @@ final class PessoaFisica
     private $cpf;
     private $dtNasc;
     private $senha;
+    private $nivel;
+
 
     /**
      * @param $nome
@@ -18,12 +20,14 @@ final class PessoaFisica
      * @param $dtNasc
      * @param $senha
      */
-    public function __construct($nome = '', $cpf = '', $dtNasc = '', $senha = '')
+    public function __construct($nome = '', $cpf = '', $dtNasc = '', $senha = '', $nivel = '')
     {
         $this->nome = $nome;
         $this->cpf = $cpf;
         $this->dtNasc = $dtNasc;
         $this->senha = $senha;
+        $this->nivel = $nivel;
+
     }
 
     /**
@@ -37,7 +41,7 @@ final class PessoaFisica
     /**
      * @param mixed $idPessoaFisica
      */
-    public function setIdPessoaFisica($idPessoaFisica): void
+    public function setIdPessoaFisica($idPessoaFisica)
     {
         $this->idPessoaFisica = $idPessoaFisica;
     }
@@ -45,7 +49,7 @@ final class PessoaFisica
     /**
      * @return mixed|string
      */
-    public function getNome(): mixed
+    public function getNome()
     {
         return $this->nome;
     }
@@ -53,7 +57,7 @@ final class PessoaFisica
     /**
      * @param mixed|string $nome
      */
-    public function setNome(mixed $nome): void
+    public function setNome(mixed $nome)
     {
         $this->nome = $nome;
     }
@@ -61,7 +65,7 @@ final class PessoaFisica
     /**
      * @return mixed|string
      */
-    public function getCpf(): mixed
+    public function getCpf()
     {
         return $this->cpf;
     }
@@ -69,7 +73,7 @@ final class PessoaFisica
     /**
      * @param mixed|string $cpf
      */
-    public function setCpf(mixed $cpf): void
+    public function setCpf(mixed $cpf)
     {
         $this->cpf = $cpf;
     }
@@ -77,7 +81,7 @@ final class PessoaFisica
     /**
      * @return mixed|string
      */
-    public function getDtNasc(): mixed
+    public function getDtNasc()
     {
         return $this->dtNasc;
     }
@@ -85,7 +89,7 @@ final class PessoaFisica
     /**
      * @param mixed|string $dtNasc
      */
-    public function setDtNasc(mixed $dtNasc): void
+    public function setDtNasc(mixed $dtNasc)
     {
         $this->dtNasc = $dtNasc;
     }
@@ -93,7 +97,7 @@ final class PessoaFisica
     /**
      * @return mixed|string
      */
-    public function getSenha(): mixed
+    public function getSenha()
     {
         return $this->senha;
     }
@@ -101,13 +105,33 @@ final class PessoaFisica
     /**
      * @param mixed|string $senha
      */
-    public function setSenha(mixed $senha): void
+    public function setSenha(mixed $senha)
     {
         $this->senha = $senha;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getNivel()
+    {
+        return $this->nivel;
+    }
+
+    /**
+     * @param mixed|string $nivel
+     */
+    public function setNivel($nivel)
+    {
+        $this->nivel = $nivel;
     }
 
     public static function login($cpf, $senha)
     {
         return PessoaFisicaDAO::login($cpf, $senha);
+    }
+        public static function save(PessoaFisica $fisica)
+    {
+        return PessoaFisicaDAO::save($fisica);
     }
 }

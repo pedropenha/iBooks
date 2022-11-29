@@ -2,6 +2,8 @@
 
 namespace App\Model;
 
+use App\DAO\ColaboradorDAO;
+
 class Colaborador
 {
     private $id_colaborador;
@@ -13,7 +15,7 @@ class Colaborador
      * @param $id_pessoa_fisica
      * @param $matricula_colaborador
      */
-    public function __construct($id_colaborador, $id_pessoa_fisica, $matricula_colaborador)
+    public function __construct($id_colaborador='', $id_pessoa_fisica, $matricula_colaborador)
     {
         $this->id_colaborador = $id_colaborador;
         $this->id_pessoa_fisica = $id_pessoa_fisica;
@@ -66,5 +68,8 @@ class Colaborador
     public function setMatriculaColaborador($matricula_colaborador): void
     {
         $this->matricula_colaborador = $matricula_colaborador;
+    }
+    public static function save (Colaborador $colaborador){
+        return ColaboradorDAO::save($colaborador);
     }
 }

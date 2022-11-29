@@ -28,6 +28,8 @@ $app->group('/iBooks/categoria', function (\Slim\Routing\RouteCollectorProxy $gr
 
 $app->group('/iBooks/login', function (\Slim\Routing\RouteCollectorProxy $group) {
     $group->post('/', \App\Control\Login::class.':login');
+    $group->post('/crialogin', \App\Control\Login::class.':CadastroLogin');
+
 });
 
 $app->group('/iBooks/livro', function (\Slim\Routing\RouteCollectorProxy $group) {
